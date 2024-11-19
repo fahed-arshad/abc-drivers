@@ -4,7 +4,6 @@ import useWindowSize from "@/hooks/useWindowSize";
 
 import { Button } from "@/components/ui/button";
 import {
-  MenuIcon,
   BanknoteIcon,
   BriefcaseBusinessIcon,
   CircleDollarSignIcon,
@@ -115,7 +114,7 @@ function MobileSidebarTab({ icon: Icon, label, href }: MobileSidebarTabProps) {
 
 function DesktopSidebar() {
   return (
-    <div className="border-r border-input h-full">
+    <div className="border-r border-input h-full py-10">
       {/* <MenuIcon /> */}
       <div className="flex flex-col">
         {SidabarTabs.main.map((tab) => (

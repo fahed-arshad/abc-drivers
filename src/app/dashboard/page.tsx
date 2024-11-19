@@ -1,23 +1,7 @@
-"use client";
+"use server";
 
-import { useEffect } from "react";
+import { redirect } from "next/navigation";
 
-import { useAuth } from "@clerk/nextjs";
-
-function DashboardPage() {
-  const { getToken } = useAuth();
-
-  useEffect(() => {
-    getToken({ template: "Test" }).then((token) => {
-      console.log("Clerk Token", token);
-    });
-  }, []);
-
-  return (
-    <div>
-      <h1 className="text-9xl">DashboardPage</h1>
-    </div>
-  );
+export default async function Home() {
+  redirect("/dashboard/my-information");
 }
-
-export default DashboardPage;
