@@ -1,32 +1,28 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-import z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from 'react-hook-form';
 
-import { useForm } from "react-hook-form";
+import { twMerge } from 'tailwind-merge';
 
-import { twMerge } from "tailwind-merge";
+import { toast } from 'sonner';
 
-import { toast } from "sonner";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+
+import useApi from '@/hooks/api/useApi';
+import { useUser } from '@/hooks/useUser';
 
 const formSchema = z.object({
-  firstName: z.string().min(1, "Required"),
-  lastName: z.string().min(1, "Required"),
-  phone: z.string().min(1, "Required"),
-  driverEmail: z.string().min(1, "Required"),
+  firstName: z.string().min(1, 'Required'),
+  lastName: z.string().optional(),
+  phone: z.string().min(1, 'Required'),
+  driverEmail: z.string().min(1, 'Required')
 });
 
 type FormProps = z.infer<typeof formSchema>;
@@ -34,30 +30,77 @@ type FormProps = z.infer<typeof formSchema>;
 type DriverInformationProps = React.HTMLAttributes<HTMLDivElement>;
 
 function DriverInformation({ className }: DriverInformationProps) {
-  const [loading, setLoading] = useState(false);
+  const { user } = useUser();
+  const { drivers } = useApi();
+
+  const queryClient = useQueryClient();
+
+  const { data: driver } = useQuery({
+    queryKey: ['drivers', user?.id],
+    queryFn: () => drivers.getDriver()
+  });
+
+  const { mutateAsync: createDriverMutation, isPending: isCreating } = useMutation({
+    mutationFn: drivers.createDriver,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['drivers', user?.id] });
+      toast.success('Driver created successfully.');
+    },
+    onError: () => {
+      toast.error('Failed to create driver.');
+    }
+  });
+
+  const { mutateAsync: editDriverMutation, isPending: isEditing } = useMutation({
+    mutationFn: drivers.editDriver,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['drivers', user?.id] });
+      toast.success('Driver updated successfully.');
+    },
+    onError: () => {
+      toast.error('Failed to update driver.');
+    }
+  });
 
   const form = useForm<FormProps>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      phone: "",
-      driverEmail: "",
+      firstName: '',
+      lastName: '',
+      phone: '',
+      driverEmail: ''
     },
+    values: {
+      firstName: driver?.firstName ?? '',
+      lastName: driver?.lastName ?? '',
+      phone: driver?.phone,
+      driverEmail: driver?.email
+    }
   });
 
   const handleSubmit = async (data: FormProps) => {
-    console.log(data);
+    if (driver?.id) {
+      await editDriverMutation({
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.driverEmail,
+        phone: data.phone
+      });
+    } else {
+      await createDriverMutation({
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.driverEmail,
+        phone: data.phone
+      });
+    }
   };
 
   return (
-    <div className={twMerge("space-y-4", className)}>
+    <div className={twMerge('space-y-4', className)}>
       <h2 className="text-2xl">DRIVER INFORMATION</h2>
       <Form {...form}>
-        <form
-          className="space-y-4 w-full mx-auto md:w-[600px]"
-          onSubmit={form.handleSubmit(handleSubmit)}
-        >
+        <form className="space-y-4 w-full mx-auto md:w-[600px]" onSubmit={form.handleSubmit(handleSubmit)}>
           <FormField
             control={form.control}
             name="firstName"
@@ -112,12 +155,7 @@ function DriverInformation({ className }: DriverInformationProps) {
           />
 
           <div className="flex justify-center">
-            <Button
-              type="submit"
-              size="lg"
-              loading={loading}
-              className="text-lg font-semibold"
-            >
+            <Button type="submit" size="lg" loading={isCreating || isEditing} className="text-lg font-semibold">
               SAVE
             </Button>
           </div>

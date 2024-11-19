@@ -14,6 +14,7 @@ type Props<T extends string> = {
   onSearchValueChange: (value: string) => void;
   items: { value: T; label: string }[];
   isLoading?: boolean;
+  disabled?: boolean;
   emptyMessage?: string;
   placeholder?: string;
 };
@@ -25,6 +26,7 @@ export function Autocomplete<T extends string>({
   onSearchValueChange,
   items,
   isLoading,
+  disabled,
   emptyMessage = 'No items.',
   placeholder = 'Search...'
 }: Props<T>) {
@@ -68,6 +70,7 @@ export function Autocomplete<T extends string>({
             <CommandPrimitive.Input
               asChild
               value={searchValue}
+              disabled={disabled}
               onValueChange={onSearchValueChange}
               onKeyDown={(e) => setOpen(e.key !== 'Escape')}
               onMouseDown={() => setOpen((open) => !!searchValue || !open)}
