@@ -1,9 +1,18 @@
 "use client";
 
+import { useState } from "react";
+
+import { useRouter } from "next/navigation";
+
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useForm } from "react-hook-form";
+
+import { useSignUp } from "@clerk/nextjs";
+import { isClerkAPIResponseError } from "@clerk/nextjs/errors";
+
+import { toast } from "sonner";
 
 import {
   Form,
@@ -22,12 +31,16 @@ import SignUpDisclaimer from "../../components/disclaimer";
 const formSchema = z.object({
   email: z.string().email().min(1, "Required"),
   phone: z.string().min(1, "Required"),
-  password: z.string().min(1, "Required"),
+  password: z.string().min(8, "Required"),
 });
 
 type FormProps = z.infer<typeof formSchema>;
 
 function SignUpPage() {
+  const router = useRouter();
+  const { isLoaded, signUp } = useSignUp();
+  const [loading, setLoading] = useState(false);
+
   const form = useForm<FormProps>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -37,8 +50,43 @@ function SignUpPage() {
     },
   });
 
-  const handleOnSubmit = async (values: FormProps) => {
-    console.log(values);
+  // Handle submission of the sign-up form
+  const handleSubmit = async (data: FormProps) => {
+    if (!isLoaded) return;
+
+    setLoading(true);
+    try {
+      await signUp.create({
+        emailAddress: data.email,
+        password: data.password,
+        unsafeMetadata: {
+          phone: data.phone,
+        },
+      });
+
+      // Send the user an email with the verification code
+      await signUp.prepareEmailAddressVerification({
+        strategy: "email_code",
+      });
+
+      router.push("/auth/verify");
+    } catch (err: any) {
+      // See https://clerk.com/docs/custom-flows/error-handling
+      // for more info on error handling
+      console.error(JSON.stringify(err, null, 2));
+      if (isClerkAPIResponseError(err)) {
+        const error = err?.errors[0];
+        const code = error?.code;
+        const message = error?.message;
+        if (code === "form_identifier_exists")
+          return toast.error(message ?? "Email already exists");
+        if (code === "form_password_pwned")
+          return toast.error(message ?? "Password is too weak");
+        return toast.error("An error occurred. Please try again later");
+      } else return toast.error("An error occurred. Please try again later");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -52,7 +100,7 @@ function SignUpPage() {
       <Form {...form}>
         <form
           className="space-y-4 w-full mx-auto md:w-[600px]"
-          onSubmit={form.handleSubmit(handleOnSubmit)}
+          onSubmit={form.handleSubmit(handleSubmit)}
         >
           <FormField
             control={form.control}
@@ -95,7 +143,12 @@ function SignUpPage() {
           />
 
           <div className="flex justify-center">
-            <Button type="submit" size="lg" className="text-lg font-semibold">
+            <Button
+              type="submit"
+              size="lg"
+              loading={loading}
+              className="text-lg font-semibold"
+            >
               JOIN US
             </Button>
           </div>
