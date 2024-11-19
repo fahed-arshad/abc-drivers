@@ -13,7 +13,11 @@ function DashboardPage() {
     });
   }, []);
 
-  return <div>DashboardPage</div>;
+  return (
+    <div>
+      <h1 className="text-9xl">DashboardPage</h1>
+    </div>
+  );
 }
 
 export default DashboardPage;
