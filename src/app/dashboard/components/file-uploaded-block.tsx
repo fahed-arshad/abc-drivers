@@ -22,7 +22,9 @@ function FileUploadedBlock({
       <div className="border-2 border-input border-dashed px-4 py-5 flex flex-col items-center justify-center space-y-2">
         <div className="flex flex-row items-center gap-2">
           <CheckCircleIcon className="w-4 h-4" />
-          <p className="text-sm font-semibold">You have already uploaded</p>
+          <p className="text-sm font-semibold">
+            You have already uploaded the document
+          </p>
         </div>
 
         <Link href={url} target="_blank">

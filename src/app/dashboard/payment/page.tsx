@@ -1,62 +1,110 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-import z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from 'react-hook-form';
 
-import { useForm } from "react-hook-form";
+import { toast } from 'sonner';
 
-import Headline from "../components/headline";
-import { Separator } from "@/components/ui/separator";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { CircleDollarSignIcon } from "lucide-react";
+import Headline from '../components/headline';
+import { Separator } from '@/components/ui/separator';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
+import { useUser } from '@/hooks/useUser';
+import useApi from '@/hooks/api/useApi';
+
+import { CircleDollarSignIcon } from 'lucide-react';
 
 const formSchema = z.object({
-  accountNo: z.string().min(1, "Required"),
-  bankName: z.string().min(1, "Required"),
-  iban: z.string().min(1, "Required"),
-  accountOwnerName: z.string().min(1, "Required"),
-  linkedPhoneNo: z.string().min(1, "Required"),
-  method: z.string().min(1, "Required"),
+  accountNo: z.string().min(1, 'Required'),
+  bankName: z.string().min(1, 'Required'),
+  iban: z.string().min(1, 'Required'),
+  accountOwnerName: z.string().min(1, 'Required'),
+  linkedPhoneNo: z.string().min(1, 'Required'),
+  method: z.string().min(1, 'Required')
 });
 
 type FormProps = z.infer<typeof formSchema>;
 
 function PaymentPage() {
-  const [loading, setLoading] = useState(false);
+  const { user } = useUser();
+  const { drivers } = useApi();
+
+  const queryClient = useQueryClient();
+
+  const { data: driver } = useQuery({
+    queryKey: ['drivers', user?.id],
+    queryFn: () => drivers.getDriver()
+  });
+
+  const { mutateAsync: createDriverMutation, isPending: isCreating } = useMutation({
+    mutationFn: drivers.createDriverBankAccount,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['drivers', user?.id] });
+      toast.success('Bank account details saved successfully.');
+    },
+    onError: () => {
+      toast.error('Failed to update bank account details.');
+    }
+  });
+
+  const { mutateAsync: editDriverMutation, isPending: isEditing } = useMutation({
+    mutationFn: drivers.editDriverBankAccount,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['drivers', user?.id] });
+      toast.success('Driver updated successfully.');
+    },
+    onError: () => {
+      toast.error('Failed to update driver.');
+    }
+  });
 
   const form = useForm<FormProps>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      accountNo: "",
-      bankName: "",
-      iban: "",
-      accountOwnerName: "",
-      linkedPhoneNo: "",
-      method: SupportedMethods[0].value,
+      accountNo: '',
+      bankName: '',
+      iban: '',
+      accountOwnerName: '',
+      linkedPhoneNo: '',
+      method: SupportedMethods[0].value
     },
+    values: {
+      accountNo: driver?.bankAccount?.accNo ?? '',
+      bankName: driver?.bankAccount?.bankName ?? '',
+      iban: driver?.bankAccount?.iban ?? '',
+      accountOwnerName: driver?.bankAccount?.holderName ?? '',
+      linkedPhoneNo: driver?.bankAccount?.linkedPhone ?? '',
+      method: driver?.bankAccount?.preferredMethod ?? SupportedMethods[0].value
+    }
   });
 
   const handleSubmit = async (data: FormProps) => {
-    console.log(data);
+    if (driver) {
+      await editDriverMutation({
+        bankName: data.bankName,
+        holderName: data.accountOwnerName,
+        iban: data.iban,
+        accNo: data.accountNo,
+        linkedPhone: data.linkedPhoneNo,
+        preferredMethod: data.method
+      });
+    } else {
+      await createDriverMutation({
+        bankName: data.bankName,
+        holderName: data.accountOwnerName,
+        iban: data.iban,
+        accNo: data.accountNo,
+        linkedPhone: data.linkedPhoneNo,
+        preferredMethod: data.method
+      });
+    }
   };
 
   return (
@@ -68,10 +116,7 @@ function PaymentPage() {
 
       <div className="mt-8">
         <Form {...form}>
-          <form
-            className="space-y-4 w-full mx-auto md:w-[600px]"
-            onSubmit={form.handleSubmit(handleSubmit)}
-          >
+          <form className="space-y-4 w-full mx-auto md:w-[600px]" onSubmit={form.handleSubmit(handleSubmit)}>
             <FormField
               control={form.control}
               name="accountNo"
@@ -139,15 +184,12 @@ function PaymentPage() {
             />
             <FormField
               control={form.control}
-              name="linkedPhoneNo"
+              name="method"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Preferred method(Bank OR mobile)</FormLabel>
                   <FormControl>
-                    <Select
-                      onValueChange={(value) => form.setValue("method", value)}
-                      {...field}
-                    >
+                    <Select defaultValue={field.value} onValueChange={field.onChange}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select method" />
                       </SelectTrigger>
@@ -166,12 +208,7 @@ function PaymentPage() {
             />
 
             <div className="flex justify-center">
-              <Button
-                type="submit"
-                size="lg"
-                loading={loading}
-                className="text-lg font-semibold"
-              >
+              <Button type="submit" size="lg" loading={isCreating || isEditing} className="text-lg font-semibold">
                 SAVE
               </Button>
             </div>
@@ -186,11 +223,11 @@ export default PaymentPage;
 
 const SupportedMethods = [
   {
-    value: "BANK_TRANSFER",
-    label: "Bank Transfer",
+    value: 'BANK_TRANSFER',
+    label: 'Bank Transfer'
   },
   {
-    value: "MOBILE_PAYMENT",
-    label: "Mobile Payment",
-  },
+    value: 'MOBILE_PAYMENT',
+    label: 'Mobile Payment'
+  }
 ];
