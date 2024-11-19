@@ -26,6 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import FileUploadBlock from "../components/file-upload-block";
 
 import { BriefcaseBusinessIcon } from "lucide-react";
 
@@ -165,6 +166,12 @@ function BusinessInformationPage() {
                   <FormMessage />
                 </FormItem>
               )}
+            />
+
+            <FileUploadBlock
+              title="Upload CR"
+              description="For verification upload your CR"
+              onUploadFinished={(data) => {}}
             />
 
             <div className="flex justify-center">
