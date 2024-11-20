@@ -1,8 +1,12 @@
-import { useRef, useState } from "react";
+import { useRef } from 'react';
 
-import { toast } from "sonner";
+import { toast } from 'sonner';
 
-import { Button } from "@/components/ui/button";
+import { useMutation } from '@tanstack/react-query';
+
+import { Button } from '@/components/ui/button';
+
+import useApi from '@/hooks/api/useApi';
 
 type FileUploadBlockProps = {
   title: string;
@@ -10,37 +14,37 @@ type FileUploadBlockProps = {
   onUploadFinished: (data: any) => void;
 };
 
-function FileUploadBlock({
-  title,
-  description,
-  onUploadFinished,
-}: FileUploadBlockProps) {
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+
+function FileUploadBlock({ title, description, onUploadFinished }: FileUploadBlockProps) {
+  const { storage } = useApi();
   const fileRef = useRef<HTMLInputElement>(null);
-  const [uploading, setUploading] = useState(false);
+
+  const { mutateAsync: uploadFileMutation, isPending: isUploading } = useMutation({
+    mutationFn: storage.uploadFile,
+    onSuccess: (data) => {
+      onUploadFinished(data);
+      toast.success('File uploaded successfully.');
+    },
+    onError: () => {
+      toast.error('Failed to upload file.');
+    }
+  });
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
+      e.preventDefault();
       const file = e.target.files?.[0];
       if (!file) return;
 
-      setUploading(true);
+      if (file.size > MAX_FILE_SIZE) {
+        toast.error('File size exceeds the limit of 5MB.');
+        return;
+      }
 
-      const formData = new FormData();
-      formData.append("file", file);
-
-      const response = await fetch("http://localhost:3000/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await response.json();
-      onUploadFinished(data);
-      toast.success("File uploaded successfully");
+      await uploadFileMutation(file);
     } catch (err) {
       console.error(err);
-      toast.error("Failed to upload file");
-    } finally {
-      setUploading(false);
     }
   };
 
@@ -52,7 +56,7 @@ function FileUploadBlock({
         <p className="text-sm font-semibold">Select File Here</p>
         <p className="text-xs">Files supported: pdf, image</p>
         <Button
-          loading={uploading}
+          loading={isUploading}
           onClick={(e) => {
             e.preventDefault();
             fileRef.current?.click();
@@ -60,12 +64,7 @@ function FileUploadBlock({
         >
           Choose File
         </Button>
-        <input
-          type="file"
-          ref={fileRef}
-          onChange={handleUpload}
-          style={{ display: "none" }}
-        />
+        <input type="file" ref={fileRef} onChange={handleUpload} style={{ display: 'none' }} />
       </div>
     </div>
   );

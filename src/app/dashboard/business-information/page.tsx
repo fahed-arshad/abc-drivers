@@ -16,6 +16,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import FileUploadBlock from '../components/file-upload-block';
+import FileUploadedBlock from '../components/file-uploaded-block';
 
 import { useUser } from '@/hooks/useUser';
 import useApi from '@/hooks/api/useApi';
@@ -49,10 +50,10 @@ function BusinessInformationPage() {
     mutationFn: drivers.createDriverBusiness,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['drivers', user?.id] });
-      toast.success('Driver created successfully.');
+      toast.success('Business details saved successfully.');
     },
     onError: () => {
-      toast.error('Failed to create driver.');
+      toast.error('Failed to save business details.');
     }
   });
 
@@ -60,10 +61,10 @@ function BusinessInformationPage() {
     mutationFn: drivers.editDriverBusiness,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['drivers', user?.id] });
-      toast.success('Driver updated successfully.');
+      toast.success('Business details updated successfully.');
     },
     onError: () => {
-      toast.error('Failed to update driver.');
+      toast.error('Failed to update business details.');
     }
   });
 
@@ -88,6 +89,10 @@ function BusinessInformationPage() {
       crUrl: driver?.business?.crUrl ?? ''
     }
   });
+
+  const handleFileUploaded = (data: any) => {
+    form.setValue('crUrl', data.url);
+  };
 
   const handleSubmit = async (data: FormProps) => {
     if (driver?.business) {
@@ -116,8 +121,6 @@ function BusinessInformationPage() {
       });
     }
   };
-
-  console.log('driver', driver);
 
   return (
     <div className="p-4">
@@ -219,7 +222,11 @@ function BusinessInformationPage() {
               )}
             />
 
-            <FileUploadBlock title="Upload CR" description="For verification upload your CR" onUploadFinished={(data) => {}} />
+            {form.watch('crUrl') ? (
+              <FileUploadedBlock title="Upload CR" description="For verification upload your CR" url={form.watch('crUrl')} />
+            ) : (
+              <FileUploadBlock title="Upload CR" description="For verification upload your CR" onUploadFinished={handleFileUploaded} />
+            )}
 
             <div className="flex justify-center">
               <Button type="submit" size="lg" loading={isCreating || isEditing} className="text-lg font-semibold">
