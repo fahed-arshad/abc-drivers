@@ -2,11 +2,13 @@ import axios from '@/lib/axios';
 
 import { useAuth } from '@clerk/nextjs';
 
+import { JWT_TEMPLATE } from './constants/api';
+
 function useDriversApi() {
   const { getToken } = useAuth();
 
   const getDriver = async () => {
-    const token = await getToken();
+    const token = await getToken({ template: JWT_TEMPLATE });
     const response = await axios.get(`/drivers`, {
       headers: {
         Authorization: `Bearer ${token}`
@@ -16,7 +18,7 @@ function useDriversApi() {
   };
 
   const createDriver = async (data: any) => {
-    const token = await getToken();
+    const token = await getToken({ template: JWT_TEMPLATE });
     const response = await axios.post('/drivers', data, {
       headers: {
         Authorization: `Bearer ${token}`
@@ -26,7 +28,7 @@ function useDriversApi() {
   };
 
   const createDriverVehicle = async (data: any) => {
-    const token = await getToken();
+    const token = await getToken({ template: JWT_TEMPLATE });
     const response = await axios.post('/drivers/vehicles', data, {
       headers: {
         Authorization: `Bearer ${token}`
@@ -36,7 +38,7 @@ function useDriversApi() {
   };
 
   const createDriverBankAccount = async (data: any) => {
-    const token = await getToken();
+    const token = await getToken({ template: JWT_TEMPLATE });
     const response = await axios.post('/drivers/bank-accounts', data, {
       headers: {
         Authorization: `Bearer ${token}`
@@ -46,7 +48,7 @@ function useDriversApi() {
   };
 
   const createDriverBusiness = async (data: any) => {
-    const token = await getToken();
+    const token = await getToken({ template: JWT_TEMPLATE });
     const response = await axios.post('/drivers/businesses', data, {
       headers: {
         Authorization: `Bearer ${token}`
@@ -56,7 +58,7 @@ function useDriversApi() {
   };
 
   const createDriverDocuments = async (data: any[]) => {
-    const token = await getToken();
+    const token = await getToken({ template: JWT_TEMPLATE });
     const response = await axios.post('/drivers/documents', data, {
       headers: {
         Authorization: `Bearer ${token}`
@@ -66,7 +68,7 @@ function useDriversApi() {
   };
 
   const editDriver = async (data: any) => {
-    const token = await getToken();
+    const token = await getToken({ template: JWT_TEMPLATE });
     const response = await axios.patch(`/drivers`, data, {
       headers: {
         Authorization: `Bearer ${token}`
@@ -76,7 +78,7 @@ function useDriversApi() {
   };
 
   const editDriverVehicle = async (data: any) => {
-    const token = await getToken();
+    const token = await getToken({ template: JWT_TEMPLATE });
     const response = await axios.patch(`/drivers/vehicles`, data, {
       headers: {
         Authorization: `Bearer ${token}`
@@ -86,7 +88,7 @@ function useDriversApi() {
   };
 
   const editDriverAvailability = async (data: any) => {
-    const token = await getToken();
+    const token = await getToken({ template: JWT_TEMPLATE });
     const response = await axios.patch(`/drivers/operating-hours`, data, {
       headers: {
         Authorization: `Bearer ${token}`
@@ -96,7 +98,7 @@ function useDriversApi() {
   };
 
   const editDriverBankAccount = async (data: any) => {
-    const token = await getToken();
+    const token = await getToken({ template: JWT_TEMPLATE });
     const response = await axios.patch(`/drivers/bank-accounts`, data, {
       headers: {
         Authorization: `Bearer ${token}`
@@ -106,7 +108,7 @@ function useDriversApi() {
   };
 
   const editDriverBusiness = async (data: any) => {
-    const token = await getToken();
+    const token = await getToken({ template: JWT_TEMPLATE });
     const response = await axios.patch(`/drivers/businesses`, data, {
       headers: {
         Authorization: `Bearer ${token}`
@@ -116,7 +118,7 @@ function useDriversApi() {
   };
 
   const editDriverDocuments = async (data: any[]) => {
-    const token = await getToken();
+    const token = await getToken({ template: JWT_TEMPLATE });
     const response = await axios.patch(`/drivers/documents`, data, {
       headers: {
         Authorization: `Bearer ${token}`
@@ -126,7 +128,7 @@ function useDriversApi() {
   };
 
   const deleteDriver = async (id: string) => {
-    const token = await getToken();
+    const token = await getToken({ template: JWT_TEMPLATE });
     const response = await axios.delete(`/drivers/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`

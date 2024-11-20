@@ -1,10 +1,13 @@
 import useDriversApi from './useDriversApi';
+import useStorageApi from './useStorageApi';
 
 function useApi() {
   const driversApi = useDriversApi();
+  const storageApi = useStorageApi();
 
   return {
-    drivers: driversApi
+    drivers: driversApi,
+    storage: storageApi
   };
 }
 
