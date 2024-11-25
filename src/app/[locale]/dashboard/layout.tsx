@@ -2,13 +2,14 @@ import Header from './components/header';
 import Sidebar from './components/sidebar';
 import Footer from './components/footer';
 
-function DashboardLayout({
+async function DashboardLayout({
   children,
-  params: { locale }
+  params
 }: Readonly<{
   children: React.ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }>) {
+  const { locale } = await params;
   return (
     <div className="relative h-screen">
       <Header locale={locale} className="absolute top-0 left-0 right-0" />

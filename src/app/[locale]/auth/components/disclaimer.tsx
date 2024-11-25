@@ -11,7 +11,7 @@ function SignUpDisclaimer() {
           {' '}
           <Link href="/">{t('terms')}</Link>
         </span>{' '}
-        {t('and')}
+        {t('and')}{' '}
         <span className="text-primary">
           <Link href="/">{t('privacy')}</Link>
         </span>

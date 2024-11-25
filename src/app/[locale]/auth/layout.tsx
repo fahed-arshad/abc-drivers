@@ -1,12 +1,13 @@
 import Header from './components/header';
 
-function AuthLayout({
+async function AuthLayout({
   children,
-  params: { locale }
+  params
 }: Readonly<{
   children: React.ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }>) {
+  const { locale } = await params;
   return (
     <div className="relative bg-red-300 h-full">
       <Header locale={locale} className="absolute top-0 left-0 right-0" />
