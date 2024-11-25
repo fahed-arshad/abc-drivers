@@ -1,0 +1,240 @@
+{
+  "authHeader": {
+    "back": "BACK"
+  },
+  "dashboardHeader": {
+    "back": "BACK"
+  },
+  "authNavigator": {
+    "login": "LOGIN",
+    "signUp": "SIGN UP"
+  },
+  "dashboardSidebar": {
+    "My Information": "My Information",
+    "Operating Hours": "Operating Hours",
+    "Services Available": "Services",
+    "Payment": "Payment",
+    "Business Information": "Business Information",
+    "Driver Documents": "Driver Documents",
+    "Partner Agreement": "Partner Agreement",
+    "Partner Policy": "Partner Policy",
+    "Support": "Support"
+  },
+  "fileUploadBlock": {
+    "title": "Select File Here",
+    "description": "Files supported: pdf, image",
+    "cta": "Choose File"
+  },
+  "fileUploadedBlock": {
+    "title": "You have already uploaded the document",
+    "cta": "Download"
+  },
+  "footer": {
+    "signOut": "Sign Out",
+    "support": "Support",
+    "terms": "Terms of Services",
+    "privacy": "Privacy Policy"
+  },
+  "signInPage": {
+    "title": "Login to your ABC Emergency Partner Account",
+    "emailField": {
+      "title": "Email",
+      "placeholder": "Enter your email"
+    },
+    "passwordField": {
+      "title": "Password",
+      "placeholder": "Enter your password"
+    },
+    "cta": "LOG IN"
+  },
+  "signUpPage": {
+    "title": "Create your ABC Emergency Partner Account",
+    "emailField": {
+      "title": "Email",
+      "placeholder": "Enter your email"
+    },
+    "phoneField": {
+      "title": "Phone",
+      "placeholder": "Enter your phone number"
+    },
+    "passwordField": {
+      "title": "Password",
+      "placeholder": "Enter your password"
+    },
+    "agreement": "By clicking ‘JOIN US’, I agree that ABC Emergency or it’s representatives may contact me by email, phone, or SMS (including by automatic telephone dialing system) at the email address and number provided. I also agree to ABC Emergency's",
+    "terms": "Terms and Conditions",
+    "and": "and",
+    "privacy": "Privacy Policy",
+    "cta": "JOIN US"
+  },
+  "verifyPage": {
+    "title": "VERIFY YOUR EMAIL",
+    "codeField": {
+      "title": "Verification Code",
+      "placeholder": "Enter the code sent to your email"
+    },
+    "cta": "VERIFY"
+  },
+  "dashboard": {
+    "myInformationPage": {
+      "title": "MY INFORMATION",
+      "driverInformationSection": {
+        "title": "DRIVER INFORMATION",
+        "firstNameField": {
+          "title": "First Name",
+          "placeholder": "Enter your first name"
+        },
+        "lastNameField": {
+          "title": "Last Name",
+          "placeholder": "Enter your last name"
+        },
+        "phoneField": {
+          "title": "Phone Number",
+          "placeholder": "Enter your phone number"
+        },
+        "emailField": {
+          "title": "Driver Email",
+          "placeholder": "Enter your email"
+        },
+        "cta": "SAVE"
+      },
+      "vehicleInformationSection": {
+        "title": "VEHICLE INFORMATION",
+        "makeField": {
+          "title": "Make",
+          "placeholder": "Enter your vehicle make"
+        },
+        "modelField": {
+          "title": "Model",
+          "placeholder": "Enter your vehicle model"
+        },
+        "yearField": {
+          "title": "Year",
+          "placeholder": "Enter your vehicle manufactured year"
+        },
+        "colorField": {
+          "title": "Color",
+          "placeholder": "Enter your vehicle color"
+        },
+        "regNoField": {
+          "title": "Registration Number",
+          "placeholder": "Enter your vehicle registration number"
+        },
+        "cta": "SAVE"
+      }
+    },
+    "operatingHoursPage": {
+      "title": "OPERATING HOURS",
+      "operating24Hours": "Operating 24 Hours",
+      "sunday": "Sunday",
+      "monday": "Monday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday",
+      "thursday": "Thursday",
+      "friday": "Friday",
+      "saturday": "Saturday",
+      "cta": "SAVE"
+    },
+    "servicesPage": {
+      "title": "ROADSIDE SERVICES",
+      "services": {
+        "BATTERY_INSTALLATION": "Battery Installation",
+        "BATTERY_TEST": "Battery Test",
+        "FUEL_DELIVERY": "Fuel Delivery",
+        "JUMP_START": "Jump Start",
+        "TIRE_CHANGE": "Tire Change",
+        "LOCKOUT": "Lockout",
+        "LIGHT_DUTY_TOW": "Light Duty Tow",
+        "MEDIUM_DUTY_TOW": "Medium Duty Tow",
+        "HEAVY_DUTY_TOW": "Heavy Duty Tow",
+        "MOTORCYCLE_TOW": "Motorcycle Tow"
+      },
+      "cta": "SAVE"
+    },
+    "paymentPage": {
+      "title": "PAYMENT",
+      "accountNumberField": {
+        "title": "Account Number"
+      },
+      "bankNameField": {
+        "title": "Bank Name"
+      },
+      "ibanField": {
+        "title": "IBAN"
+      },
+      "nameOnBankAccountField": {
+        "title": "Name on Bank Account"
+      },
+      "linkedPhoneField": {
+        "title": "Phone Number Linked to Bank"
+      },
+      "methodField": {
+        "title": "Preferred method(Bank OR mobile)"
+      },
+      "methods": {
+        "BANK_TRANSFER": "Bank Transfer",
+        "MOBILE_PAYMENT": "Mobile Payment"
+      },
+      "cta": "SAVE"
+    },
+    "businessInformationPage": {
+      "title": "BUSINESS INFORMATION",
+      "businessNameField": {
+        "title": "Business Name"
+      },
+      "businessAddressField": {
+        "title": "Business Address"
+      },
+      "businessAddress2Field": {
+        "title": "Business Address 2 (Optional)"
+      },
+      "cityField": {
+        "title": "City"
+      },
+      "governateField": {
+        "title": "Governate"
+      },
+      "crNoField": {
+        "title": "CR Number"
+      },
+      "crUploadField": {
+        "title": "Upload CR",
+        "description": "For verification upload your CR"
+      },
+      "governates": {
+        "Muscat": "Muscat",
+        "Dhofar": "Dhofar",
+        "Musandam": "Musandam",
+        "Al Wusta": "Al Wusta",
+        "Al Buraimi": "Al Buraimi",
+        "Ad Dhahirah": "Ad Dhahirah",
+        "Ad Dakhiliyah": "Ad Dakhiliyah",
+        "Al Batinah North (Al Batinah North Governorate)": "Al Batinah North (Al Batinah North Governorate)",
+        "Al Batinah South (Al Batinah South Governorate)": "Al Batinah South (Al Batinah South Governorate)",
+        "Ash Sharqiyah North (Ash Sharqiyah North Governorate)": "Ash Sharqiyah North (Ash Sharqiyah North Governorate)",
+        "Ash Sharqiyah South (Ash Sharqiyah South Governorate)": "Ash Sharqiyah South (Ash Sharqiyah South Governorate)"
+      },
+      "cta": "SAVE"
+    },
+    "driverDocumentsPage": {
+      "title": "INSURANCE INFORMATION",
+      "insuranceUploadField": {
+        "title": "Driver and vehicle Insurance",
+        "description": "For verification upload your vehicle insurance"
+      },
+      "vehicleOwnershipUploadField": {
+        "title": "Vehicle Ownership (Mulkiya)",
+        "description": "For verification upload your vehicle ownership (mulkiya)"
+      },
+      "licenseUploadField": {
+        "title": "Driver License",
+        "description": "For verification upload your driver license"
+      },
+      "idUploadField": {
+        "title": "Identification card",
+        "description": "For verification upload your Resident identification card"
+      },
+      "cta": "SAVE"
+    }
+  }
+}
