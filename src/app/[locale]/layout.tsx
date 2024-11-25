@@ -1,8 +1,13 @@
 import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
-import './globals.css';
+import '../globals.css';
 
 import { ClerkProvider } from '@clerk/nextjs';
+
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages } from 'next-intl/server';
+import { notFound } from 'next/navigation';
+import { routing } from '@/i18n/routing';
 
 import { Toaster } from '@/components/ui/sonner';
 import ReactQueryProvider from '@/components/react-query-provider';
@@ -18,15 +23,30 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({
-  children
+  children,
+  params
 }: Readonly<{
   children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }>) {
+  const { locale } = await params;
+
+  console.log('locale', locale);
+
+  // Ensure that the incoming `locale` is valid
+  if (!routing.locales.includes(locale as any)) {
+    notFound();
+  }
+
+  const messages = await getMessages();
+
   return (
     <ClerkProvider dynamic={true}>
       <html lang="en">
         <body className={`${poppins.className} antialiased`}>
-          <ReactQueryProvider>{children}</ReactQueryProvider>
+          <ReactQueryProvider>
+            <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
+          </ReactQueryProvider>
           <Toaster />
         </body>
       </html>
