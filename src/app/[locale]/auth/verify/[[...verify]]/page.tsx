@@ -1,48 +1,43 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 
-import z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-import { useForm } from "react-hook-form";
+import { useForm } from 'react-hook-form';
 
-import { useSignUp } from "@clerk/nextjs";
+import { useSignUp } from '@clerk/nextjs';
 
-import axios from "@/lib/axios";
+import axios from '@/lib/axios';
 
-import { toast } from "sonner";
+import { toast } from 'sonner';
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import { useTranslations } from 'next-intl';
 
 const formSchema = z.object({
-  code: z.string().min(1, "Required"),
+  code: z.string().min(1, 'Required')
 });
 
 type FormProps = z.infer<typeof formSchema>;
 
 function VerificationPage() {
   const router = useRouter();
+  const t = useTranslations('verifyPage');
   const [loading, setLoading] = useState(false);
   const { isLoaded, signUp, setActive } = useSignUp();
 
   const form = useForm<FormProps>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      code: "",
-    },
+      code: ''
+    }
   });
 
   const handleVerify = async (data: FormProps) => {
@@ -52,22 +47,22 @@ function VerificationPage() {
     try {
       // Use the code the user provided to attempt verification
       const signUpAttempt = await signUp.attemptEmailAddressVerification({
-        code: data.code,
+        code: data.code
       });
 
       // If verification was completed, set the session to active
       // and redirect the user
-      if (signUpAttempt.status === "complete") {
+      if (signUpAttempt.status === 'complete') {
         // Create a new user in the DB
-        await axios.post("/auth/signup-via-clerk", {
+        await axios.post('/auth/signup-via-clerk', {
           email: signUpAttempt.emailAddress,
           phone: signUpAttempt.unsafeMetadata.phone,
-          externalId: signUpAttempt.createdUserId,
+          externalId: signUpAttempt.createdUserId
         });
 
         await setActive({ session: signUpAttempt.createdSessionId });
 
-        router.push("/dashboard");
+        router.push('/dashboard');
       } else {
         // If the status is not complete, check why. User may need to
         // complete further steps.
@@ -76,11 +71,11 @@ function VerificationPage() {
     } catch (err: any) {
       // See https://clerk.com/docs/custom-flows/error-handling
       // for more info on error handling
-      console.error("Error:", JSON.stringify(err, null, 2));
+      console.error('Error:', JSON.stringify(err, null, 2));
 
       if (err?.status === 409) {
-        toast.error("User already exists. Please login.");
-        router.push("/auth/sign-in");
+        toast.error('User already exists. Please login.');
+        router.push('/auth/sign-in');
       }
     } finally {
       setLoading(false);
@@ -89,26 +84,19 @@ function VerificationPage() {
 
   return (
     <div className="container max-w-3xl space-y-10">
-      <h2 className="text-2xl text-center text-white font-bold">
-        VERIFY YOUR EMAIL
-      </h2>
+      <h2 className="text-2xl text-center text-white font-bold">{t('title')}</h2>
       <Separator />
 
       <Form {...form}>
-        <form
-          className="space-y-4 w-full mx-auto md:w-[600px]"
-          onSubmit={form.handleSubmit(handleVerify)}
-        >
+        <form className="space-y-4 w-full mx-auto md:w-[600px]" onSubmit={form.handleSubmit(handleVerify)}>
           <FormField
             control={form.control}
             name="code"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-white">
-                  Enter your verification code
-                </FormLabel>
+                <FormLabel className="text-white">{t('codeField.title')}</FormLabel>
                 <FormControl>
-                  <Input placeholder="Verification code" {...field} />
+                  <Input placeholder={t('codeField.placeholder')} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -116,13 +104,8 @@ function VerificationPage() {
           />
 
           <div className="flex justify-center">
-            <Button
-              type="submit"
-              size="lg"
-              loading={loading}
-              className="text-lg font-semibold"
-            >
-              VERIFY
+            <Button type="submit" size="lg" loading={loading} className="text-lg font-semibold">
+              {t('cta')}
             </Button>
           </div>
         </form>

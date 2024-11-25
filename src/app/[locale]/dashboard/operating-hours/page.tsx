@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 
+import { useTranslations } from 'next-intl';
+
 import { toast } from 'sonner';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -21,6 +23,7 @@ import { ClockIcon } from 'lucide-react';
 function OperatingHoursPage() {
   const { user } = useUser();
   const { drivers } = useApi();
+  const t = useTranslations('dashboard.operatingHoursPage');
 
   const queryClient = useQueryClient();
 
@@ -113,13 +116,13 @@ function OperatingHoursPage() {
   return (
     <div className="p-4">
       <div className="space-y-4">
-        <Headline title="OPERATING HOURS" icon={ClockIcon} />
+        <Headline title={t('title')} icon={ClockIcon} />
         <Separator />
       </div>
 
       <div className="flex items-center flex-wrap space-x-2 border rounded-lg px-4 py-6 mt-8">
         <Switch id="24hours" checked={operating24Hours} onCheckedChange={setOperating24Hours} />
-        <Label htmlFor="24hours">Operating 24 Hours</Label>
+        <Label htmlFor="24hours">{t('operating24Hours')}</Label>
       </div>
 
       {!operating24Hours && !isPending && (
@@ -131,7 +134,7 @@ function OperatingHoursPage() {
       )}
 
       <Button loading={isEditing} onClick={handleSubmit} className="mt-4">
-        SAVE
+        {t('cta')}
       </Button>
     </div>
   );

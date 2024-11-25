@@ -2,6 +2,7 @@
 
 import useWindowSize from '@/hooks/useWindowSize';
 
+import { useTranslations } from 'next-intl';
 import { Link, usePathname } from '@/i18n/routing';
 
 import { Button } from '@/components/ui/button';
@@ -18,7 +19,7 @@ function Sidebar() {
 
 export default Sidebar;
 
-const SidabarTabs = {
+const SidebarTabs = {
   main: [
     {
       icon: UserIcon,
@@ -75,12 +76,12 @@ function MobileSidebar() {
     <div className="border-r border-input h-full">
       {/* <MenuIcon /> */}
       <div className="flex flex-col">
-        {SidabarTabs.main.map((tab) => (
+        {SidebarTabs.main.map((tab) => (
           <MobileSidebarTab key={tab.label} {...tab} />
         ))}
       </div>
       <div className="flex flex-col mt-16">
-        {SidabarTabs.legal.map((tab) => (
+        {SidebarTabs.legal.map((tab) => (
           <MobileSidebarTab key={tab.label} {...tab} />
         ))}
       </div>
@@ -113,12 +114,12 @@ function DesktopSidebar() {
     <div className="border-r border-input h-full py-10">
       {/* <MenuIcon /> */}
       <div className="flex flex-col">
-        {SidabarTabs.main.map((tab) => (
+        {SidebarTabs.main.map((tab) => (
           <DesktopSidebarTab key={tab.label} {...tab} />
         ))}
       </div>
       <div className="flex flex-col mt-16">
-        {SidabarTabs.legal.map((tab) => (
+        {SidebarTabs.legal.map((tab) => (
           <DesktopSidebarTab key={tab.label} {...tab} />
         ))}
       </div>
@@ -135,12 +136,13 @@ type DesktopSidebarTabProps = {
 function DesktopSidebarTab({ icon: Icon, label, href }: DesktopSidebarTabProps) {
   const path = usePathname();
   const isActive = path === href;
+  const t = useTranslations('dashboardSidebar');
   const activeLinkStyle = 'border-l-2 border-primary';
 
   return (
     <Link href={href} className={`w-full ${isActive && activeLinkStyle}`}>
       <Button variant="ghost" size="lg" className="w-full flex flex-row justify-start items-center">
-        <Icon /> <span className="ml-2">{label}</span>
+        <Icon /> <span className="ml-2">{t(label)}</span>
       </Button>
     </Link>
   );

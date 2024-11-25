@@ -5,6 +5,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useForm } from 'react-hook-form';
 
+import { useTranslations } from 'next-intl';
+
 import { twMerge } from 'tailwind-merge';
 
 import { toast } from 'sonner';
@@ -38,6 +40,7 @@ type DriverInformationProps = React.HTMLAttributes<HTMLDivElement>;
 function VehicleInformation({ className }: DriverInformationProps) {
   const { user } = useUser();
   const { drivers } = useApi();
+  const t = useTranslations('dashboard.myInformationPage.vehicleInformationSection');
 
   const queryClient = useQueryClient();
 
@@ -118,7 +121,7 @@ function VehicleInformation({ className }: DriverInformationProps) {
 
   return (
     <div className={twMerge('space-y-4', className)}>
-      <h2 className="text-2xl">VEHICLE INFORMATION</h2>
+      <h2 className="text-2xl">{t('title')}</h2>
       <Form {...form}>
         <form className="space-y-4 w-full mx-auto md:w-[600px]" onSubmit={form.handleSubmit(handleSubmit)}>
           <FormField
@@ -126,12 +129,12 @@ function VehicleInformation({ className }: DriverInformationProps) {
             name="make"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Make</FormLabel>
+                <FormLabel>{t('makeField.title')}</FormLabel>
                 <FormControl>
                   <Autocomplete
                     isLoading={isVehicleMakesLoading}
                     items={vehicleMakes?.map((make) => ({ label: make as string, value: make as string })) ?? []}
-                    placeholder="Select vehicle make"
+                    placeholder={t('makeField.placeholder')}
                     searchValue={field.value}
                     onSearchValueChange={field.onChange}
                     selectedValue={field.value}
@@ -147,12 +150,12 @@ function VehicleInformation({ className }: DriverInformationProps) {
             name="model"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Model</FormLabel>
+                <FormLabel>{t('modelField.title')}</FormLabel>
                 <FormControl>
                   <Autocomplete
                     isLoading={isVehicleModelsLoading}
                     items={vehicleModels?.map((model) => ({ label: model as string, value: model as string })) ?? []}
-                    placeholder="Select vehicle model"
+                    placeholder={t('modelField.placeholder')}
                     searchValue={field.value}
                     onSearchValueChange={field.onChange}
                     selectedValue={field.value}
@@ -168,11 +171,11 @@ function VehicleInformation({ className }: DriverInformationProps) {
             name="year"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Year</FormLabel>
+                <FormLabel>{t('yearField.title')}</FormLabel>
                 <FormControl>
                   <Autocomplete
                     items={VehicleYears?.filter((year) => year.includes(field.value))?.map((year) => ({ label: year, value: year })) ?? []}
-                    placeholder="Select vehicle year"
+                    placeholder={t('yearField.placeholder')}
                     searchValue={field.value}
                     onSearchValueChange={field.onChange}
                     selectedValue={field.value}
@@ -188,11 +191,11 @@ function VehicleInformation({ className }: DriverInformationProps) {
             name="color"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Color</FormLabel>
+                <FormLabel>{t('colorField.title')}</FormLabel>
                 <FormControl>
                   <Autocomplete
                     items={vehicleColors?.filter((color) => color.includes(field.value))?.map((color) => ({ label: color, value: color })) ?? []}
-                    placeholder="Select vehicle color"
+                    placeholder={t('colorField.placeholder')}
                     searchValue={field.value}
                     onSearchValueChange={field.onChange}
                     selectedValue={field.value}
@@ -208,7 +211,7 @@ function VehicleInformation({ className }: DriverInformationProps) {
             name="registrationNo"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Registration Number</FormLabel>
+                <FormLabel>{t('regNoField.title')}</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
@@ -219,7 +222,7 @@ function VehicleInformation({ className }: DriverInformationProps) {
 
           <div className="flex justify-center">
             <Button type="submit" size="lg" loading={isCreating || isEditing} className="text-lg font-semibold">
-              SAVE
+              {t('cta')}
             </Button>
           </div>
         </form>

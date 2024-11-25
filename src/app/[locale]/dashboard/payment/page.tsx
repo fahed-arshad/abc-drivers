@@ -5,6 +5,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useForm } from 'react-hook-form';
 
+import { useTranslations } from 'next-intl';
+
 import { toast } from 'sonner';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -35,6 +37,7 @@ type FormProps = z.infer<typeof formSchema>;
 function PaymentPage() {
   const { user } = useUser();
   const { drivers } = useApi();
+  const t = useTranslations('dashboard.paymentPage');
 
   const queryClient = useQueryClient();
 
@@ -110,7 +113,7 @@ function PaymentPage() {
   return (
     <div className="p-4">
       <div className="space-y-4">
-        <Headline title="PAYMENT" icon={CircleDollarSignIcon} />
+        <Headline title={t('title')} icon={CircleDollarSignIcon} />
         <Separator />
       </div>
 
@@ -122,7 +125,7 @@ function PaymentPage() {
               name="accountNo"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Account Number</FormLabel>
+                  <FormLabel>{t('accountNumberField.title')}</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -135,7 +138,7 @@ function PaymentPage() {
               name="bankName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Bank Name</FormLabel>
+                  <FormLabel>{t('bankNameField.title')}</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -148,7 +151,7 @@ function PaymentPage() {
               name="iban"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>IBAN</FormLabel>
+                  <FormLabel>{t('ibanField.title')}</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -161,7 +164,7 @@ function PaymentPage() {
               name="accountOwnerName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name on Bank Account</FormLabel>
+                  <FormLabel>{t('nameOnBankAccountField.title')}</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -174,7 +177,7 @@ function PaymentPage() {
               name="linkedPhoneNo"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Phone Number Linked to Bank</FormLabel>
+                  <FormLabel>{t('linkedPhoneField.title')}</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -187,7 +190,7 @@ function PaymentPage() {
               name="method"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Preferred method(Bank OR mobile)</FormLabel>
+                  <FormLabel>{t('methodField.title')}</FormLabel>
                   <FormControl>
                     <Select defaultValue={field.value} onValueChange={field.onChange}>
                       <SelectTrigger>
@@ -196,7 +199,7 @@ function PaymentPage() {
                       <SelectContent>
                         {SupportedMethods.map((method) => (
                           <SelectItem key={method.value} value={method.value}>
-                            {method.label}
+                            {t(`methods.${method.value}`)}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -209,7 +212,7 @@ function PaymentPage() {
 
             <div className="flex justify-center">
               <Button type="submit" size="lg" loading={isCreating || isEditing} className="text-lg font-semibold">
-                SAVE
+                {t('cta')}
               </Button>
             </div>
           </form>

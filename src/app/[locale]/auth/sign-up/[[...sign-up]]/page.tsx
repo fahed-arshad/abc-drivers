@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 import { useRouter } from '@/i18n/routing';
+import { useTranslations } from 'next-intl';
 
 import { useSignUp } from '@clerk/nextjs';
 import { isClerkAPIResponseError } from '@clerk/nextjs/errors';
@@ -31,6 +32,7 @@ type FormProps = z.infer<typeof formSchema>;
 
 function SignUpPage() {
   const router = useRouter();
+  const t = useTranslations('signUpPage');
   const { isLoaded, signUp } = useSignUp();
   const [loading, setLoading] = useState(false);
 
@@ -83,7 +85,7 @@ function SignUpPage() {
   return (
     <div className="container max-w-3xl space-y-10">
       <Navigator />
-      <h2 className="text-2xl text-center text-white font-bold">Create your ABC Emergency Partner Account</h2>
+      <h2 className="text-2xl text-center text-white font-bold">{t('title')}</h2>
       <Separator />
 
       <Form {...form}>
@@ -93,9 +95,9 @@ function SignUpPage() {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-white">Email</FormLabel>
+                <FormLabel className="text-white">{t('emailField.title')}</FormLabel>
                 <FormControl>
-                  <Input placeholder="Email" {...field} />
+                  <Input placeholder={t('emailField.placeholder')} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -106,9 +108,9 @@ function SignUpPage() {
             name="phone"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-white">Phone</FormLabel>
+                <FormLabel className="text-white">{t('phoneField.title')}</FormLabel>
                 <FormControl>
-                  <Input placeholder="Phone" {...field} />
+                  <Input placeholder={t('phoneField.placeholder')} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -119,9 +121,9 @@ function SignUpPage() {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-white">Password</FormLabel>
+                <FormLabel className="text-white">{t('passwordField.title')}</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder="Password" {...field} />
+                  <Input type="password" placeholder={t('passwordField.placeholder')} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -130,7 +132,7 @@ function SignUpPage() {
 
           <div className="flex justify-center">
             <Button type="submit" size="lg" loading={loading} className="text-lg font-semibold">
-              JOIN US
+              {t('cta')}
             </Button>
           </div>
         </form>

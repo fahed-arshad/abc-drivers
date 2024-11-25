@@ -3,10 +3,12 @@ import { useEffect, useState } from 'react';
 import { Link } from '@/i18n/routing';
 
 import { twMerge } from 'tailwind-merge';
+import { useTranslations } from 'next-intl';
 
 type NavigatorProps = React.HTMLAttributes<HTMLDivElement>;
 
 function Navigator({ className }: NavigatorProps) {
+  const t = useTranslations('authNavigator');
   const [activeLink, setActiveLink] = useState<'sign-up' | 'sign-in'>('sign-in');
 
   useEffect(() => {
@@ -22,10 +24,10 @@ function Navigator({ className }: NavigatorProps) {
   return (
     <div className={twMerge('flex flex-row items-center gap-8 py-4 text-white', className)}>
       <Link href="/auth/sign-up" className={`text-xl py-2 ${activeLink === 'sign-up' && activeLinkStyle}`}>
-        SIGN UP
+        {t('signUp')}
       </Link>
       <Link href="/auth/sign-in" className={`text-xl py-2 ${activeLink === 'sign-in' && activeLinkStyle}`}>
-        LOGIN
+        {t('login')}
       </Link>
     </div>
   );

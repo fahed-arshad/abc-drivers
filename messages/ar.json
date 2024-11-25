@@ -1,5 +1,240 @@
 {
-  "Test": {
-    "Hello": "Hello, {name}!"
+  "authHeader": {
+    "back": "رجوع"
+  },
+  "dashboardHeader": {
+    "back": "رجوع"
+  },
+  "authNavigator": {
+    "login": "تسجيل الدخول",
+    "signUp": "إنشاء حساب"
+  },
+  "dashboardSidebar": {
+    "My Information": "معلوماتي",
+    "Operating Hours": "ساعات العمل",
+    "Services Available": "الخدمات المتوفرة",
+    "Payment": "الدفع",
+    "Business Information": "معلومات العمل",
+    "Driver Documents": "مستندات السائق",
+    "Partner Agreement": "اتفاقية الشريك",
+    "Partner Policy": "سياسة الشريك",
+    "Support": "الدعم"
+  },
+  "fileUploadBlock": {
+    "title": "اختر الملف هنا",
+    "description": "الملفات المدعومة: PDF، صورة",
+    "cta": "اختر ملف"
+  },
+  "fileUploadedBlock": {
+    "title": "لقد قمت بالفعل برفع المستند",
+    "cta": "تحميل"
+  },
+  "footer": {
+    "signOut": "تسجيل الخروج",
+    "support": "الدعم",
+    "terms": "شروط الخدمة",
+    "privacy": "سياسة الخصوصية"
+  },
+  "signInPage": {
+    "title": "تسجيل الدخول إلى حساب شريك ABC للطوارئ",
+    "emailField": {
+      "title": "البريد الإلكتروني",
+      "placeholder": "أدخل بريدك الإلكتروني"
+    },
+    "passwordField": {
+      "title": "كلمة المرور",
+      "placeholder": "أدخل كلمة المرور الخاصة بك"
+    },
+    "cta": "تسجيل الدخول"
+  },
+  "signUpPage": {
+    "title": "إنشاء حساب شريك ABC للطوارئ",
+    "emailField": {
+      "title": "البريد الإلكتروني",
+      "placeholder": "أدخل بريدك الإلكتروني"
+    },
+    "phoneField": {
+      "title": "رقم الهاتف",
+      "placeholder": "أدخل رقم هاتفك"
+    },
+    "passwordField": {
+      "title": "كلمة المرور",
+      "placeholder": "أدخل كلمة المرور الخاصة بك"
+    },
+    "agreement": "بالنقر على ‘انضم إلينا‘، أوافق على أن ABC Emergency أو ممثليها قد يتصلون بي عبر البريد الإلكتروني أو الهاتف أو الرسائل النصية القصيرة (بما في ذلك باستخدام نظام اتصال هاتفي آلي) على البريد الإلكتروني ورقم الهاتف المقدم. كما أوافق على",
+    "terms": "الشروط والأحكام",
+    "and": "و",
+    "privacy": "سياسة الخصوصية",
+    "cta": "انضم إلينا"
+  },
+  "verifyPage": {
+    "title": "تأكيد بريدك الإلكتروني",
+    "codeField": {
+      "title": "رمز التحقق",
+      "placeholder": "أدخل الرمز المرسل إلى بريدك الإلكتروني"
+    },
+    "cta": "تأكيد"
+  },
+  "dashboard": {
+    "myInformationPage": {
+      "title": "معلوماتي",
+      "driverInformationSection": {
+        "title": "معلومات السائق",
+        "firstNameField": {
+          "title": "الاسم الأول",
+          "placeholder": "أدخل اسمك الأول"
+        },
+        "lastNameField": {
+          "title": "اسم العائلة",
+          "placeholder": "أدخل اسمك الأخير"
+        },
+        "phoneField": {
+          "title": "رقم الهاتف",
+          "placeholder": "أدخل رقم هاتفك"
+        },
+        "emailField": {
+          "title": "البريد الإلكتروني للسائق",
+          "placeholder": "أدخل بريدك الإلكتروني"
+        },
+        "cta": "حفظ"
+      },
+      "vehicleInformationSection": {
+        "title": "معلومات المركبة",
+        "makeField": {
+          "title": "الشركة المصنعة",
+          "placeholder": "أدخل الشركة المصنعة لمركبتك"
+        },
+        "modelField": {
+          "title": "الطراز",
+          "placeholder": "أدخل طراز مركبتك"
+        },
+        "yearField": {
+          "title": "سنة الصنع",
+          "placeholder": "أدخل سنة تصنيع مركبتك"
+        },
+        "colorField": {
+          "title": "اللون",
+          "placeholder": "أدخل لون مركبتك"
+        },
+        "regNoField": {
+          "title": "رقم التسجيل",
+          "placeholder": "أدخل رقم تسجيل مركبتك"
+        },
+        "cta": "حفظ"
+      }
+    },
+    "operatingHoursPage": {
+      "title": "ساعات العمل",
+      "operating24Hours": "يعمل على مدار 24 ساعة",
+      "sunday": "الأحد",
+      "monday": "الإثنين",
+      "tuesday": "الثلاثاء",
+      "wednesday": "الأربعاء",
+      "thursday": "الخميس",
+      "friday": "الجمعة",
+      "saturday": "السبت",
+      "cta": "حفظ"
+    },
+    "servicesPage": {
+      "title": "خدمات الطوارئ على الطريق",
+      "services": {
+        "BATTERY_INSTALLATION": "تركيب البطارية",
+        "BATTERY_TEST": "اختبار البطارية",
+        "FUEL_DELIVERY": "توصيل الوقود",
+        "JUMP_START": "تشغيل البطارية",
+        "TIRE_CHANGE": "تغيير الإطارات",
+        "LOCKOUT": "فتح القفل",
+        "LIGHT_DUTY_TOW": "سحب خفيف",
+        "MEDIUM_DUTY_TOW": "سحب متوسط",
+        "HEAVY_DUTY_TOW": "سحب ثقيل",
+        "MOTORCYCLE_TOW": "سحب الدراجات النارية"
+      },
+      "cta": "حفظ"
+    },
+    "paymentPage": {
+      "title": "الدفع",
+      "accountNumberField": {
+        "title": "رقم الحساب"
+      },
+      "bankNameField": {
+        "title": "اسم البنك"
+      },
+      "ibanField": {
+        "title": "رقم الآيبان"
+      },
+      "nameOnBankAccountField": {
+        "title": "الاسم على الحساب البنكي"
+      },
+      "linkedPhoneField": {
+        "title": "رقم الهاتف المرتبط بالبنك"
+      },
+      "methodField": {
+        "title": "الطريقة المفضلة (البنك أو الهاتف)"
+      },
+      "methods": {
+        "BANK_TRANSFER": "التحويل البنكي",
+        "MOBILE_PAYMENT": "الدفع عبر الهاتف"
+      },
+      "cta": "حفظ"
+    },
+    "businessInformationPage": {
+      "title": "معلومات العمل",
+      "businessNameField": {
+        "title": "اسم العمل"
+      },
+      "businessAddressField": {
+        "title": "عنوان العمل"
+      },
+      "businessAddress2Field": {
+        "title": "عنوان العمل 2 (اختياري)"
+      },
+      "cityField": {
+        "title": "المدينة"
+      },
+      "governateField": {
+        "title": "المحافظة"
+      },
+      "crNoField": {
+        "title": "رقم السجل التجاري"
+      },
+      "crUploadField": {
+        "title": "تحميل السجل التجاري",
+        "description": "لإجراء التحقق، يرجى تحميل السجل التجاري"
+      },
+      "governates": {
+        "Muscat": "مسقط",
+        "Dhofar": "ظفار",
+        "Musandam": "مسندم",
+        "Al Wusta": "الوسطى",
+        "Al Buraimi": "البريمي",
+        "Ad Dhahirah": "الظاهرة",
+        "Ad Dakhiliyah": "الداخلية",
+        "Al Batinah North (Al Batinah North Governorate)": "الباطنة شمال (محافظة الباطنة شمال)",
+        "Al Batinah South (Al Batinah South Governorate)": "الباطنة جنوب (محافظة الباطنة جنوب)",
+        "Ash Sharqiyah North (Ash Sharqiyah North Governorate)": "الشرقية شمال (محافظة الشرقية شمال)",
+        "Ash Sharqiyah South (Ash Sharqiyah South Governorate)": "الشرقية جنوب (محافظة الشرقية جنوب)"
+      },
+      "cta": "حفظ"
+    },
+    "driverDocumentsPage": {
+      "title": "معلومات التأمين",
+      "insuranceUploadField": {
+        "title": "تأمين السائق والمركبة",
+        "description": "لإجراء التحقق، يرجى تحميل تأمين المركبة الخاصة بك"
+      },
+      "vehicleOwnershipUploadField": {
+        "title": "ملكية المركبة (الملكية)",
+        "description": "لإجراء التحقق، يرجى تحميل ملكية المركبة (الملكية)"
+      },
+      "licenseUploadField": {
+        "title": "رخصة القيادة",
+        "description": "لإجراء التحقق، يرجى تحميل رخصة القيادة الخاصة بك"
+      },
+      "idUploadField": {
+        "title": "بطاقة الهوية",
+        "description": "لإجراء التحقق، يرجى تحميل بطاقة الإقامة الخاصة بك"
+      },
+      "cta": "حفظ"
+    }
   }
 }

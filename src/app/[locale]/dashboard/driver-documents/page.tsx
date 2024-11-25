@@ -5,6 +5,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useForm } from 'react-hook-form';
 
+import { useTranslations } from 'next-intl';
+
 import { toast } from 'sonner';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -33,6 +35,7 @@ type FormProps = z.infer<typeof formSchema>;
 function DriverDocumentsPage() {
   const { user } = useUser();
   const { drivers } = useApi();
+  const t = useTranslations('dashboard.driverDocumentsPage');
 
   const queryClient = useQueryClient();
 
@@ -100,7 +103,7 @@ function DriverDocumentsPage() {
   return (
     <div className="p-4">
       <div className="space-y-4">
-        <Headline title="INSURANCE INFORMATION" icon={FilesIcon} />
+        <Headline title={t('title')} icon={FilesIcon} />
         <Separator />
       </div>
 
@@ -109,52 +112,52 @@ function DriverDocumentsPage() {
           <Form {...form}>
             <form className="space-y-4 w-full mx-auto md:w-[750px] grid grid-cols-1 md:grid-cols-2 gap-24" onSubmit={form.handleSubmit(handleSubmit)}>
               {form.watch('vehicleInsuranceUrl') ? (
-                <FileUploadedBlock title="Driver and vehicle Insurance" description="For verification upload your vehicle insurance" url={form.watch('vehicleInsuranceUrl')!} />
+                <FileUploadedBlock title={t('insuranceUploadField.title')} description={t('insuranceUploadField.description')} url={form.watch('vehicleInsuranceUrl')!} />
               ) : (
                 <FileUploadBlock
-                  title="Driver and vehicle Insurance"
-                  description="For verification upload your vehicle insurance"
+                  title={t('insuranceUploadField.title')}
+                  description={t('insuranceUploadField.description')}
                   onUploadFinished={(data) => handleFileUploaded('vehicleInsuranceUrl', data)}
                 />
               )}
 
               {form.watch('vehicleOwnershipUrl') ? (
                 <FileUploadedBlock
-                  title="Vehicle Ownership (Mulkiya)"
-                  description="For verification upload your vehicle ownership (mulkiya)"
+                  title={t('vehicleOwnershipUploadField.title')}
+                  description={t('vehicleOwnershipUploadField.description')}
                   url={form.watch('vehicleOwnershipUrl')!}
                 />
               ) : (
                 <FileUploadBlock
-                  title="Vehicle Ownership (Mulkiya)"
-                  description="For verification upload your vehicle ownership (mulkiya)"
+                  title={t('vehicleOwnershipUploadField.title')}
+                  description={t('vehicleOwnershipUploadField.description')}
                   onUploadFinished={(data) => handleFileUploaded('vehicleOwnershipUrl', data)}
                 />
               )}
 
               {form.watch('driverLicenseUrl') ? (
-                <FileUploadedBlock title="Driver License" description="For verification upload your driving license" url={form.watch('driverLicenseUrl')!} />
+                <FileUploadedBlock title={t('licenseUploadField.title')} description={t('licenseUploadField.description')} url={form.watch('driverLicenseUrl')!} />
               ) : (
                 <FileUploadBlock
-                  title="Driver License"
-                  description="For verification upload your driving license"
+                  title={t('licenseUploadField.title')}
+                  description={t('licenseUploadField.description')}
                   onUploadFinished={(data) => handleFileUploaded('driverLicenseUrl', data)}
                 />
               )}
 
               {form.watch('identificationCardUrl') ? (
-                <FileUploadedBlock title="Identification card" description="For verification upload your Resident identification card" url={form.watch('identificationCardUrl')!} />
+                <FileUploadedBlock title={t('idUploadField.title')} description={t('idUploadField.description')} url={form.watch('identificationCardUrl')!} />
               ) : (
                 <FileUploadBlock
-                  title="Identification card"
-                  description="For verification upload your Resident identification card"
+                  title={t('idUploadField.title')}
+                  description={t('idUploadField.description')}
                   onUploadFinished={(data) => handleFileUploaded('identificationCardUrl', data)}
                 />
               )}
 
               <div className="flex justify-center">
                 <Button type="submit" size="lg" loading={isEditing} className="text-lg font-semibold">
-                  SAVE
+                  {t('cta')}
                 </Button>
               </div>
             </form>

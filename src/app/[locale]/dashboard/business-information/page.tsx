@@ -5,6 +5,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useForm } from 'react-hook-form';
 
+import { useTranslations } from 'next-intl';
+
 import { toast } from 'sonner';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -38,6 +40,7 @@ type FormProps = z.infer<typeof formSchema>;
 function BusinessInformationPage() {
   const { user } = useUser();
   const { drivers } = useApi();
+  const t = useTranslations('dashboard.businessInformationPage');
 
   const queryClient = useQueryClient();
 
@@ -125,7 +128,7 @@ function BusinessInformationPage() {
   return (
     <div className="p-4">
       <div className="space-y-4">
-        <Headline title="BUSINESS INFORMATION" icon={BriefcaseBusinessIcon} />
+        <Headline title={t('title')} icon={BriefcaseBusinessIcon} />
         <Separator />
       </div>
 
@@ -137,7 +140,7 @@ function BusinessInformationPage() {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Business Name</FormLabel>
+                  <FormLabel>{t('businessNameField.title')}</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -150,7 +153,7 @@ function BusinessInformationPage() {
               name="address"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Business Address</FormLabel>
+                  <FormLabel>{t('businessAddressField.title')}</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -163,7 +166,7 @@ function BusinessInformationPage() {
               name="address2"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Business Address 2 (Optional)</FormLabel>
+                  <FormLabel>{t('businessAddress2Field.title')}</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -176,7 +179,7 @@ function BusinessInformationPage() {
               name="city"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>City</FormLabel>
+                  <FormLabel>{t('cityField.title')}</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -189,7 +192,7 @@ function BusinessInformationPage() {
               name="governate"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Governate</FormLabel>
+                  <FormLabel>{t('governateField.title')}</FormLabel>
                   <FormControl>
                     <Select onValueChange={(value) => form.setValue('governate', value)} {...field}>
                       <SelectTrigger>
@@ -198,7 +201,7 @@ function BusinessInformationPage() {
                       <SelectContent>
                         {Governates.map((governate) => (
                           <SelectItem key={governate} value={governate}>
-                            {governate}
+                            {t(`governates.${governate}`)}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -213,7 +216,7 @@ function BusinessInformationPage() {
               name="crNo"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>CR Number</FormLabel>
+                  <FormLabel>{t('crNoField.title')}</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -223,14 +226,14 @@ function BusinessInformationPage() {
             />
 
             {form.watch('crUrl') ? (
-              <FileUploadedBlock title="Upload CR" description="For verification upload your CR" url={form.watch('crUrl')} />
+              <FileUploadedBlock title={t('crUploadField.title')} description={t('crUploadField.description')} url={form.watch('crUrl')} />
             ) : (
-              <FileUploadBlock title="Upload CR" description="For verification upload your CR" onUploadFinished={handleFileUploaded} />
+              <FileUploadBlock title={t('crUploadField.title')} description={t('crUploadField.description')} onUploadFinished={handleFileUploaded} />
             )}
 
             <div className="flex justify-center">
               <Button type="submit" size="lg" loading={isCreating || isEditing} className="text-lg font-semibold">
-                SAVE
+                {t('cta')}
               </Button>
             </div>
           </form>
@@ -246,12 +249,12 @@ const Governates = [
   'Muscat',
   'Dhofar',
   'Musandam',
+  'Al Wusta',
   'Al Buraimi',
+  'Ad Dhahirah',
   'Ad Dakhiliyah',
   'Al Batinah North (Al Batinah North Governorate)',
   'Al Batinah South (Al Batinah South Governorate)',
   'Ash Sharqiyah North (Ash Sharqiyah North Governorate)',
-  'Ash Sharqiyah South (Ash Sharqiyah South Governorate)',
-  'Ad Dhahirah',
-  'Al Wusta'
+  'Ash Sharqiyah South (Ash Sharqiyah South Governorate)'
 ];

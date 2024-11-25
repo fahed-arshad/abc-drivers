@@ -1,5 +1,7 @@
 import { useRef } from 'react';
 
+import { useTranslations } from 'next-intl';
+
 import { toast } from 'sonner';
 
 import { useMutation } from '@tanstack/react-query';
@@ -18,6 +20,7 @@ const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
 function FileUploadBlock({ title, description, onUploadFinished }: FileUploadBlockProps) {
   const { storage } = useApi();
+  const t = useTranslations('fileUploadBlock');
   const fileRef = useRef<HTMLInputElement>(null);
 
   const { mutateAsync: uploadFileMutation, isPending: isUploading } = useMutation({
@@ -53,8 +56,8 @@ function FileUploadBlock({ title, description, onUploadFinished }: FileUploadBlo
       <p className="text-sm font-semibold">{title}</p>
       <p className="text-xs">{description}</p>
       <div className="border-2 border-input border-dashed px-4 py-5 flex flex-col items-center justify-center space-y-2">
-        <p className="text-sm font-semibold">Select File Here</p>
-        <p className="text-xs">Files supported: pdf, image</p>
+        <p className="text-sm font-semibold">{t('title')}</p>
+        <p className="text-xs">{t('description')}</p>
         <Button
           loading={isUploading}
           onClick={(e) => {
@@ -62,7 +65,7 @@ function FileUploadBlock({ title, description, onUploadFinished }: FileUploadBlo
             fileRef.current?.click();
           }}
         >
-          Choose File
+          {t('cta')}
         </Button>
         <input type="file" ref={fileRef} onChange={handleUpload} style={{ display: 'none' }} />
       </div>

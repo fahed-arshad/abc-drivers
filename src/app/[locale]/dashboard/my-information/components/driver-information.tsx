@@ -5,6 +5,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useForm } from 'react-hook-form';
 
+import { useTranslations } from 'next-intl';
+
 import { twMerge } from 'tailwind-merge';
 
 import { toast } from 'sonner';
@@ -32,6 +34,7 @@ type DriverInformationProps = React.HTMLAttributes<HTMLDivElement>;
 function DriverInformation({ className }: DriverInformationProps) {
   const { user } = useUser();
   const { drivers } = useApi();
+  const t = useTranslations('dashboard.myInformationPage.driverInformationSection');
 
   const queryClient = useQueryClient();
 
@@ -98,7 +101,7 @@ function DriverInformation({ className }: DriverInformationProps) {
 
   return (
     <div className={twMerge('space-y-4', className)}>
-      <h2 className="text-2xl">DRIVER INFORMATION</h2>
+      <h2 className="text-2xl">{t('title')}</h2>
       <Form {...form}>
         <form className="space-y-4 w-full mx-auto md:w-[600px]" onSubmit={form.handleSubmit(handleSubmit)}>
           <FormField
@@ -106,7 +109,7 @@ function DriverInformation({ className }: DriverInformationProps) {
             name="firstName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>First Name</FormLabel>
+                <FormLabel>{t('firstNameField.title')}</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
@@ -119,7 +122,7 @@ function DriverInformation({ className }: DriverInformationProps) {
             name="lastName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Last Name</FormLabel>
+                <FormLabel>{t('lastNameField.title')}</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
@@ -132,7 +135,7 @@ function DriverInformation({ className }: DriverInformationProps) {
             name="phone"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Phone Number</FormLabel>
+                <FormLabel>{t('phoneField.title')}</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
@@ -145,7 +148,7 @@ function DriverInformation({ className }: DriverInformationProps) {
             name="driverEmail"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Driver Email</FormLabel>
+                <FormLabel>{t('emailField.title')}</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
@@ -156,7 +159,7 @@ function DriverInformation({ className }: DriverInformationProps) {
 
           <div className="flex justify-center">
             <Button type="submit" size="lg" loading={isCreating || isEditing} className="text-lg font-semibold">
-              SAVE
+              {t('cta')}
             </Button>
           </div>
         </form>

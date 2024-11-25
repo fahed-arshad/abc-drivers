@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import { useTranslations } from 'next-intl';
+
 import { Autocomplete } from '@/components/ui/autocomplete';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
@@ -25,24 +27,25 @@ type AvailabilityBlockProps = {
 function AvailabilityBlock({ availability, onChange }: AvailabilityBlockProps) {
   const [open, setOpen] = useState(availability.open);
   const [close, setClose] = useState(availability.close);
+  const t = useTranslations('dashboard.operatingHoursPage');
   const [isAvailable, setIsAvailable] = useState(availability.isAvailable);
 
   const getDay = (day: Day) => {
     switch (day) {
       case 'SUNDAY':
-        return 'Sunday';
+        return t('sunday');
       case 'MONDAY':
-        return 'Monday';
+        return t('monday');
       case 'TUESDAY':
-        return 'Tuesday';
+        return t('tuesday');
       case 'WEDNESDAY':
-        return 'Wednesday';
+        return t('wednesday');
       case 'THURSDAY':
-        return 'Thursday';
+        return t('thursday');
       case 'FRIDAY':
-        return 'Friday';
+        return t('friday');
       case 'SATURDAY':
-        return 'Saturday';
+        return t('saturday');
     }
   };
 

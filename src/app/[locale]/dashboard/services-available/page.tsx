@@ -4,6 +4,8 @@ import z from 'zod';
 
 import { useForm } from 'react-hook-form';
 
+import { useTranslations } from 'next-intl';
+
 import { toast } from 'sonner';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -28,6 +30,7 @@ type FormProps = z.infer<typeof formSchema>;
 function ServicesAvailablePage() {
   const { user } = useUser();
   const { drivers } = useApi();
+  const t = useTranslations('dashboard.servicesPage');
 
   const queryClient = useQueryClient();
 
@@ -79,7 +82,7 @@ function ServicesAvailablePage() {
   return (
     <div className="p-4">
       <div className="space-y-4">
-        <Headline title="ROADSIDE SERVICES" icon={BanknoteIcon} />
+        <Headline title={t('title')} icon={BanknoteIcon} />
         <Separator />
       </div>
 
@@ -97,7 +100,7 @@ function ServicesAvailablePage() {
                       <div className="flex items-center space-x-2">
                         <Checkbox id={service.value} checked={isChecked(service.value)} onCheckedChange={(checked) => handleCheckedChange(service.value, checked as boolean)} />
                         <label htmlFor={service.value} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                          {service.label}
+                          {t(`services.${service.value}`)}
                         </label>
                       </div>
                     </FormControl>
@@ -109,7 +112,7 @@ function ServicesAvailablePage() {
 
             <div className="flex justify-center">
               <Button type="submit" size="lg" loading={isEditing} className="text-lg font-semibold">
-                SAVE
+                {t('cta')}
               </Button>
             </div>
           </form>
