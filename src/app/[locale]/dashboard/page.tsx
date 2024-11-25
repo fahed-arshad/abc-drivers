@@ -1,7 +1,8 @@
-"use server";
+'use server';
 
-import { redirect } from "next/navigation";
+import { redirect } from 'next/navigation';
 
-export default async function Home() {
-  redirect("/dashboard/my-information");
+export default async function Home({ params }: Readonly<{ params: Promise<{ locale: string }> }>) {
+  const { locale } = await params;
+  redirect(`/${locale}/dashboard/my-information`);
 }

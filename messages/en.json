@@ -1,5 +1,5 @@
 {
-  "Test": {
+  "signInPage": {
     "Hello": "Hello, {name}!"
   }
 }

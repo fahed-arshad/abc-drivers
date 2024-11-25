@@ -6,8 +6,6 @@ import { ClerkProvider } from '@clerk/nextjs';
 
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
-import { notFound } from 'next/navigation';
-import { routing } from '@/i18n/routing';
 
 import { Toaster } from '@/components/ui/sonner';
 import ReactQueryProvider from '@/components/react-query-provider';
@@ -31,18 +29,11 @@ export default async function RootLayout({
 }>) {
   const { locale } = await params;
 
-  console.log('locale', locale);
-
-  // Ensure that the incoming `locale` is valid
-  if (!routing.locales.includes(locale as any)) {
-    notFound();
-  }
-
   const messages = await getMessages();
 
   return (
     <ClerkProvider dynamic={true}>
-      <html lang="en">
+      <html lang={locale}>
         <body className={`${poppins.className} antialiased`}>
           <ReactQueryProvider>
             <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>

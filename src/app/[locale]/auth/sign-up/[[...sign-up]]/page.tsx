@@ -1,37 +1,30 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 
-import { useRouter } from "next/navigation";
+import z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-import z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from 'react-hook-form';
 
-import { useForm } from "react-hook-form";
+import { useRouter } from '@/i18n/routing';
 
-import { useSignUp } from "@clerk/nextjs";
-import { isClerkAPIResponseError } from "@clerk/nextjs/errors";
+import { useSignUp } from '@clerk/nextjs';
+import { isClerkAPIResponseError } from '@clerk/nextjs/errors';
 
-import { toast } from "sonner";
+import { toast } from 'sonner';
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import Navigator from "../../components/navigator";
-import SignUpDisclaimer from "../../components/disclaimer";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import Navigator from '../../components/navigator';
+import SignUpDisclaimer from '../../components/disclaimer';
 
 const formSchema = z.object({
-  email: z.string().email().min(1, "Required"),
-  phone: z.string().min(1, "Required"),
-  password: z.string().min(8, "Required"),
+  email: z.string().email().min(1, 'Required'),
+  phone: z.string().min(1, 'Required'),
+  password: z.string().min(8, 'Required')
 });
 
 type FormProps = z.infer<typeof formSchema>;
@@ -44,10 +37,10 @@ function SignUpPage() {
   const form = useForm<FormProps>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
-      phone: "",
-      password: "",
-    },
+      email: '',
+      phone: '',
+      password: ''
+    }
   });
 
   // Handle submission of the sign-up form
@@ -60,16 +53,16 @@ function SignUpPage() {
         emailAddress: data.email,
         password: data.password,
         unsafeMetadata: {
-          phone: data.phone,
-        },
+          phone: data.phone
+        }
       });
 
       // Send the user an email with the verification code
       await signUp.prepareEmailAddressVerification({
-        strategy: "email_code",
+        strategy: 'email_code'
       });
 
-      router.push("/auth/verify");
+      router.push('/auth/verify');
     } catch (err: any) {
       // See https://clerk.com/docs/custom-flows/error-handling
       // for more info on error handling
@@ -78,12 +71,10 @@ function SignUpPage() {
         const error = err?.errors[0];
         const code = error?.code;
         const message = error?.message;
-        if (code === "form_identifier_exists")
-          return toast.error(message ?? "Email already exists");
-        if (code === "form_password_pwned")
-          return toast.error(message ?? "Password is too weak");
-        return toast.error("An error occurred. Please try again later");
-      } else return toast.error("An error occurred. Please try again later");
+        if (code === 'form_identifier_exists') return toast.error(message ?? 'Email already exists');
+        if (code === 'form_password_pwned') return toast.error(message ?? 'Password is too weak');
+        return toast.error('An error occurred. Please try again later');
+      } else return toast.error('An error occurred. Please try again later');
     } finally {
       setLoading(false);
     }
@@ -92,16 +83,11 @@ function SignUpPage() {
   return (
     <div className="container max-w-3xl space-y-10">
       <Navigator />
-      <h2 className="text-2xl text-center text-white font-bold">
-        Create your ABC Emergency Partner Account
-      </h2>
+      <h2 className="text-2xl text-center text-white font-bold">Create your ABC Emergency Partner Account</h2>
       <Separator />
 
       <Form {...form}>
-        <form
-          className="space-y-4 w-full mx-auto md:w-[600px]"
-          onSubmit={form.handleSubmit(handleSubmit)}
-        >
+        <form className="space-y-4 w-full mx-auto md:w-[600px]" onSubmit={form.handleSubmit(handleSubmit)}>
           <FormField
             control={form.control}
             name="email"
@@ -143,12 +129,7 @@ function SignUpPage() {
           />
 
           <div className="flex justify-center">
-            <Button
-              type="submit"
-              size="lg"
-              loading={loading}
-              className="text-lg font-semibold"
-            >
+            <Button type="submit" size="lg" loading={loading} className="text-lg font-semibold">
               JOIN US
             </Button>
           </div>

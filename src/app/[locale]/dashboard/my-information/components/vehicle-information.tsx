@@ -116,8 +116,6 @@ function VehicleInformation({ className }: DriverInformationProps) {
     }
   };
 
-  console.log('driver', driver);
-
   return (
     <div className={twMerge('space-y-4', className)}>
       <h2 className="text-2xl">VEHICLE INFORMATION</h2>

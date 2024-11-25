@@ -1,35 +1,28 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 
-import { useRouter } from "next/navigation";
+import z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-import z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from 'react-hook-form';
 
-import { useForm } from "react-hook-form";
+import { useRouter } from '@/i18n/routing';
 
-import { useSignIn } from "@clerk/nextjs";
-import { isClerkAPIResponseError } from "@clerk/nextjs/errors";
+import { useSignIn } from '@clerk/nextjs';
+import { isClerkAPIResponseError } from '@clerk/nextjs/errors';
 
-import { toast } from "sonner";
+import { toast } from 'sonner';
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import Navigator from "../../components/navigator";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import Navigator from '../../components/navigator';
 
 const formSchema = z.object({
-  email: z.string().email().min(1, "Required"),
-  password: z.string().min(1, "Required"),
+  email: z.string().email().min(1, 'Required'),
+  password: z.string().min(1, 'Required')
 });
 
 type FormProps = z.infer<typeof formSchema>;
@@ -42,9 +35,9 @@ function SignInPage() {
   const form = useForm<FormProps>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
-      password: "",
-    },
+      email: '',
+      password: ''
+    }
   });
 
   // Handle the submission of the sign-in form
@@ -58,14 +51,14 @@ function SignInPage() {
     try {
       const signInAttempt = await signIn.create({
         identifier: data.email,
-        password: data.password,
+        password: data.password
       });
 
       // If sign-in process is complete, set the created session as active
       // and redirect the user
-      if (signInAttempt.status === "complete") {
+      if (signInAttempt.status === 'complete') {
         await setActive({ session: signInAttempt.createdSessionId });
-        router.push("/dashboard");
+        router.push('/dashboard/my-information');
       } else {
         // If the status is not complete, check why. User may need to
         // complete further steps.
@@ -80,10 +73,9 @@ function SignInPage() {
         const code = error?.code;
         const message = error?.message;
         console.log(error);
-        if (code === "form_password_incorrect")
-          return toast.error(message ?? "Incorrect password");
-        return toast.error("An error occurred. Please try again later");
-      } else return toast.error("An error occurred. Please try again later");
+        if (code === 'form_password_incorrect') return toast.error(message ?? 'Incorrect password');
+        return toast.error('An error occurred. Please try again later');
+      } else return toast.error('An error occurred. Please try again later');
     } finally {
       setLoading(false);
     }
@@ -92,16 +84,11 @@ function SignInPage() {
   return (
     <div className="container max-w-3xl space-y-10">
       <Navigator />
-      <h2 className="text-2xl text-center text-white font-bold">
-        Login to your ABC Emergency Partner Account
-      </h2>
+      <h2 className="text-2xl text-center text-white font-bold">Login to your ABC Emergency Partner Account</h2>
       <Separator />
 
       <Form {...form}>
-        <form
-          className="space-y-4 w-full mx-auto md:w-[600px]"
-          onSubmit={form.handleSubmit(handleSubmit)}
-        >
+        <form className="space-y-4 w-full mx-auto md:w-[600px]" onSubmit={form.handleSubmit(handleSubmit)}>
           <FormField
             control={form.control}
             name="email"
@@ -130,12 +117,7 @@ function SignInPage() {
           />
 
           <div className="flex justify-center">
-            <Button
-              type="submit"
-              size="lg"
-              loading={loading}
-              className="text-lg font-semibold"
-            >
+            <Button type="submit" size="lg" loading={loading} className="text-lg font-semibold">
               LOG IN
             </Button>
           </div>
