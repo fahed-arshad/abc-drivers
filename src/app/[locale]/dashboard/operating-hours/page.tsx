@@ -46,9 +46,6 @@ function OperatingHoursPage() {
   const [availabilities, setAvailabilities] = useState<Availability[]>([]);
   const [operating24Hours, setOperating24Hours] = useState(false);
 
-  console.log('availabilities', availabilities);
-  console.log('operating24Hours', operating24Hours);
-
   useEffect(() => {
     if (driver?.operatingHours.length <= 0) {
       setOperating24Hours(true);

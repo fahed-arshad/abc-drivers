@@ -20,9 +20,9 @@ function Footer({ className }: FooterProps) {
     <footer className={twMerge('h-14 w-full bg-gray-100 flex flex-row items-center justify-center', className)}>
       <div className="flex flex-row items-center gap-8">
         <FooterLink label={t('signOut')} onClick={async () => await signOut()} />
-        <FooterLink label={t('support')} href="/terms-of-service" />
-        <FooterLink label={t('terms')} href="/privacy-policy" />
-        <FooterLink label={t('privacy')} href="/contact-us" />
+        <FooterLink label={t('support')} href="https://abc-emergency.com/terms-and-conditions" />
+        <FooterLink label={t('terms')} href="https://abc-emergency.com/terms-and-conditions" />
+        <FooterLink label={t('privacy')} href="https://abc-emergency.com" />
       </div>
     </footer>
   );

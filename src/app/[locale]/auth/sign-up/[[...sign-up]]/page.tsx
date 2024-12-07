@@ -83,7 +83,7 @@ function SignUpPage() {
   };
 
   return (
-    <div className="container max-w-3xl space-y-10">
+    <div className="container max-w-3xl space-y-10 py-6 h-full overflow-y-auto">
       <Navigator />
       <h2 className="text-2xl text-center text-white font-bold">{t('title')}</h2>
       <Separator />
@@ -131,7 +131,7 @@ function SignUpPage() {
           />
 
           <div className="flex justify-center">
-            <Button type="submit" size="lg" loading={loading} className="text-lg font-semibold">
+            <Button type="submit" size="lg" loading={loading} className="text-lg font-semibold w-full sm:w-fit">
               {t('cta')}
             </Button>
           </div>

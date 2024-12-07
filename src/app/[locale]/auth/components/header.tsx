@@ -42,7 +42,7 @@ function Header({ className, locale }: HeaderProps) {
             {label}
             <ChevronDownIcon className="w-4 h-4" />
           </DropdownMenuTrigger>
-          <DropdownMenuContent>
+          <DropdownMenuContent className="z-[999]">
             <DropdownMenuItem
               onClick={(e) => {
                 e.preventDefault();
