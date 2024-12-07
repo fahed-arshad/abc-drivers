@@ -76,14 +76,11 @@ function DriverDocumentsPage() {
     values: getInitialValues()
   });
 
-  console.log(driver);
-
   const handleFileUploaded = (fileName: string, data: any) => {
     form.setValue(fileName as any, data?.url);
   };
 
   const handleSubmit = async (data: FormProps) => {
-    console.log('here', data);
     const documents = [];
     if (data.vehicleInsuranceUrl) {
       documents.push({ type: 'INSURANCE', url: data.vehicleInsuranceUrl });
@@ -110,7 +107,7 @@ function DriverDocumentsPage() {
       {!isPending && (
         <div className="mt-8">
           <Form {...form}>
-            <form className="space-y-4 w-full mx-auto md:w-[750px] grid grid-cols-1 md:grid-cols-2 gap-24" onSubmit={form.handleSubmit(handleSubmit)}>
+            <form className="space-y-2 w-full mx-auto md:w-[750px] grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-24" onSubmit={form.handleSubmit(handleSubmit)}>
               {form.watch('vehicleInsuranceUrl') ? (
                 <FileUploadedBlock title={t('insuranceUploadField.title')} description={t('insuranceUploadField.description')} url={form.watch('vehicleInsuranceUrl')!} />
               ) : (

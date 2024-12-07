@@ -4,19 +4,17 @@ import Link from 'next/link';
 function SignUpDisclaimer() {
   const t = useTranslations('signUpPage');
   return (
-    <div>
-      <p className="text-white text-center">
-        {t('agreement')}{' '}
-        <span className="text-primary">
-          {' '}
-          <Link href="/">{t('terms')}</Link>
-        </span>{' '}
-        {t('and')}{' '}
-        <span className="text-primary">
-          <Link href="/">{t('privacy')}</Link>
-        </span>
-      </p>
-    </div>
+    <p className="text-xs text-neutral-300 text-center">
+      {t('agreement')}{' '}
+      <span className="text-primary">
+        {' '}
+        <Link href="https://abc-emergency.com/terms-and-conditions">{t('terms')}</Link>
+      </span>{' '}
+      {t('and')}{' '}
+      <span className="text-primary">
+        <Link href="https://abc-emergency.com/terms-and-conditions">{t('privacy')}</Link>
+      </span>
+    </p>
   );
 }
 

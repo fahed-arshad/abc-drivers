@@ -119,7 +119,7 @@ function SignInPage() {
           />
 
           <div className="flex justify-center">
-            <Button type="submit" size="lg" loading={loading} className="text-lg font-semibold">
+            <Button type="submit" size="lg" loading={loading} className="text-lg font-semibold w-full sm:w-fit">
               {t('cta')}
             </Button>
           </div>

@@ -56,17 +56,17 @@ const SidebarTabs = {
     {
       icon: FileUserIcon,
       label: 'Partner Agreement',
-      href: '/legal/partner-agreement'
+      href: 'https://abc-emergency.com/terms-and-conditions'
     },
     {
       icon: ScaleIcon,
       label: 'Partner Policy',
-      href: '/legal/partner-policy'
+      href: 'https://abc-emergency.com/terms-and-conditions'
     },
     {
       icon: CircleHelpIcon,
       label: 'Support',
-      href: '/legal/support'
+      href: 'https://abc-emergency.com/terms-and-conditions'
     }
   ]
 };
