@@ -59,7 +59,7 @@ export function Autocomplete<T extends string>({
     //   onSelectedValueChange(inputValue as T);
     //   onSearchValueChange(labels[inputValue] ?? '');
     // }
-    if (inputValue === selectedValue) {
+    if (inputValue !== selectedValue) {
       onSelectedValueChange(inputValue as T);
       onSearchValueChange(labels[inputValue] ?? '');
     }

@@ -89,7 +89,7 @@ function PaymentPage() {
   });
 
   const handleSubmit = async (data: FormProps) => {
-    if (driver) {
+    if (driver?.bankAccount) {
       await editDriverMutation({
         bankName: data.bankName,
         holderName: data.accountOwnerName,

@@ -194,7 +194,7 @@ function VehicleInformation({ className }: DriverInformationProps) {
                 <FormLabel>{t('colorField.title')}</FormLabel>
                 <FormControl>
                   <Autocomplete
-                    items={vehicleColors?.filter((color) => color.includes(field.value))?.map((color) => ({ label: color, value: color })) ?? []}
+                    items={vehicleColors?.filter((color) => color.toLowerCase().includes(field.value.toLowerCase()))?.map((color) => ({ label: color, value: color })) ?? []}
                     placeholder={t('colorField.placeholder')}
                     searchValue={field.value}
                     onSearchValueChange={field.onChange}

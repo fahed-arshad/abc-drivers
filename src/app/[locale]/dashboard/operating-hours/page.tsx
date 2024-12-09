@@ -99,6 +99,11 @@ function OperatingHoursPage() {
   };
 
   const handleSubmit = async () => {
+    if (operating24Hours) {
+      await editDriverAvailabilityMutation([]);
+      return;
+    }
+
     if (availabilities.length === 0) return;
 
     await editDriverAvailabilityMutation(

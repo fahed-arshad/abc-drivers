@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
@@ -29,6 +29,12 @@ function AvailabilityBlock({ availability, onChange }: AvailabilityBlockProps) {
   const [close, setClose] = useState(availability.close);
   const t = useTranslations('dashboard.operatingHoursPage');
   const [isAvailable, setIsAvailable] = useState(availability.isAvailable);
+
+  useEffect(() => {
+    setOpen(availability.open);
+    setClose(availability.close);
+    setIsAvailable(availability.isAvailable);
+  }, [availability]);
 
   const getDay = (day: Day) => {
     switch (day) {
