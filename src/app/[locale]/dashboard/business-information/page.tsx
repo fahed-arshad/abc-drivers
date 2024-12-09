@@ -194,9 +194,9 @@ function BusinessInformationPage() {
                 <FormItem>
                   <FormLabel>{t('governateField.title')}</FormLabel>
                   <FormControl>
-                    <Select onValueChange={(value) => form.setValue('governate', value)} {...field}>
+                    <Select value={field.value} onValueChange={field.onChange}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select method" />
+                        <SelectValue placeholder="Select governate" />
                       </SelectTrigger>
                       <SelectContent>
                         {Governates.map((governate) => (
@@ -226,7 +226,7 @@ function BusinessInformationPage() {
             />
 
             {form.watch('crUrl') ? (
-              <FileUploadedBlock title={t('crUploadField.title')} description={t('crUploadField.description')} url={form.watch('crUrl')} />
+              <FileUploadedBlock title={t('crUploadField.title')} description={t('crUploadField.description')} url={form.watch('crUrl')!} />
             ) : (
               <FileUploadBlock title={t('crUploadField.title')} description={t('crUploadField.description')} onUploadFinished={handleFileUploaded} />
             )}
