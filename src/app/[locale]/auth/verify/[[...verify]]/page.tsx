@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/i18n/routing';
 
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
