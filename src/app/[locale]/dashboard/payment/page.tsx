@@ -84,7 +84,7 @@ function PaymentPage() {
       iban: driver?.bankAccount?.iban ?? '',
       accountOwnerName: driver?.bankAccount?.holderName ?? '',
       linkedPhoneNo: driver?.bankAccount?.linkedPhone ?? '',
-      method: driver?.bankAccount?.preferredMethod ?? SupportedMethods[0].value
+      method: driver?.bankAccount?.preferredMethod
     }
   });
 
