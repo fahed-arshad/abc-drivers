@@ -192,7 +192,7 @@ function PaymentPage() {
                 <FormItem>
                   <FormLabel>{t('methodField.title')}</FormLabel>
                   <FormControl>
-                    <Select defaultValue={field.value} onValueChange={field.onChange}>
+                    <Select defaultValue={field.value} value={field.value} onValueChange={field.onChange}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select method" />
                       </SelectTrigger>
