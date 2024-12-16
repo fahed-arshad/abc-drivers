@@ -1,3 +1,4 @@
+import { NextResponse } from 'next/server';
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 import createMiddleware from 'next-intl/middleware';
 import { routing } from './i18n/routing';
@@ -9,6 +10,13 @@ const intlMiddleware = createMiddleware(routing);
 export default clerkMiddleware(async (auth, request) => {
   if (!isPublicRoute(request)) {
     await auth.protect();
+  }
+
+  // Do not allow for visiting sign-in or sign-up pages when already authenticated
+  const _auth = await auth();
+  const isAuthenticated = _auth.userId !== null;
+  if (isAuthenticated && isPublicRoute(request)) {
+    return NextResponse.redirect(new URL('/en/dashboard', request.url));
   }
 
   // Do not localize api routes
