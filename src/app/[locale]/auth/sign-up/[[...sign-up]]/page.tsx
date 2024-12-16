@@ -74,7 +74,8 @@ function SignUpPage() {
         const code = error?.code;
         const message = error?.message;
         if (code === 'form_identifier_exists') return toast.error(message ?? 'Email already exists');
-        if (code === 'form_password_pwned') return toast.error(message ?? 'Password is too weak');
+        if (code === 'form_password_pwned') return toast.error('Password is too weak');
+        if (code === 'session_exists') return toast.error('Session already exists. Please log out and try again');
         return toast.error('An error occurred. Please try again later');
       } else return toast.error('An error occurred. Please try again later');
     } finally {
