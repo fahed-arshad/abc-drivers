@@ -17,9 +17,12 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 import { useUser } from '@/hooks/useUser';
 import useApi from '@/hooks/api/useApi';
+
+import { cn } from '@/lib/utils';
 
 import { CircleDollarSignIcon } from 'lucide-react';
 
@@ -218,6 +221,8 @@ function PaymentPage() {
           </form>
         </Form>
       </div>
+
+      <PayoutDetails className="mt-8" />
     </div>
   );
 }
@@ -234,3 +239,40 @@ const SupportedMethods = [
     label: 'Mobile Payment'
   }
 ];
+
+type PayoutDetailsProps = React.HTMLAttributes<HTMLDivElement>;
+
+function PayoutDetails({ className }: PayoutDetailsProps) {
+  return (
+    <div className={cn(className)}>
+      <h2 className="font-semibold">Payouts Details</h2>
+      <Table className="mt-4">
+        {/* <TableCaption>Payout Details</TableCaption> */}
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[100px]">Job ID</TableHead>
+            <TableHead>Job Date</TableHead>
+            <TableHead>Job Status</TableHead>
+            <TableHead>Amount</TableHead>
+            <TableHead>Customer Payment Status</TableHead>
+            <TableHead>Amount Due To Driver</TableHead>
+            <TableHead>Payout Status</TableHead>
+            <TableHead>Details</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow>
+            <TableCell className="font-medium"></TableCell>
+            <TableCell></TableCell>
+            <TableCell></TableCell>
+            <TableCell className="text-right"></TableCell>
+            <TableCell className="text-xs text-gray-600">No data available</TableCell>
+            <TableCell></TableCell>
+            <TableCell></TableCell>
+            <TableCell className="text-right"></TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </div>
+  );
+}
