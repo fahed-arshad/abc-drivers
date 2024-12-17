@@ -1,13 +1,19 @@
 'use client';
 
+import { useState } from 'react';
+
 import useWindowSize from '@/hooks/useWindowSize';
 
 import { useTranslations } from 'next-intl';
 import { Link, usePathname } from '@/i18n/routing';
 
 import { Button } from '@/components/ui/button';
+import { Sheet, SheetContent } from '@/components/ui/sheet';
+import { Separator } from '@/components/ui/separator';
 
-import { BanknoteIcon, BriefcaseBusinessIcon, CircleDollarSignIcon, CircleHelpIcon, ClockIcon, FilesIcon, FileUserIcon, ScaleIcon, UserIcon } from 'lucide-react';
+import { useUser } from '@/hooks/useUser';
+
+import { BanknoteIcon, BriefcaseBusinessIcon, CircleDollarSignIcon, CircleHelpIcon, ClockIcon, FilesIcon, FileUserIcon, MenuIcon, ScaleIcon, UserIcon } from 'lucide-react';
 
 function Sidebar() {
   const { isMobile } = useWindowSize();
@@ -72,9 +78,13 @@ const SidebarTabs = {
 };
 
 function MobileSidebar() {
+  const [open, setOpen] = useState(false);
+  const { user } = useUser();
   return (
-    <div className="border-r border-input h-full">
-      {/* <MenuIcon /> */}
+    <div className="w-fit border-r border-input h-full overflow-y-auto overflow-x-hidden">
+      <Button variant="ghost" size="lg" className="w-full" onClick={() => setOpen(!open)}>
+        <MenuIcon />
+      </Button>
       <div className="flex flex-col">
         {SidebarTabs.main.map((tab) => (
           <MobileSidebarTab key={tab.label} {...tab} />
@@ -85,6 +95,24 @@ function MobileSidebar() {
           <MobileSidebarTab key={tab.label} {...tab} />
         ))}
       </div>
+      <Sheet open={open} onOpenChange={(opened) => setOpen(opened)}>
+        <SheetContent side="left" className="w-[250px] top-28 h-[calc(100vh-112px)] px-0">
+          <div className="h-full py-10  overflow-x-hidden">
+            <div className="flex flex-col overflow-y-auto">
+              {SidebarTabs.main.map((tab) => (
+                <DesktopSidebarTab key={tab.label} {...tab} />
+              ))}
+              <Separator className="my-2" />
+              {SidebarTabs.legal.map((tab) => (
+                <DesktopSidebarTab key={tab.label} {...tab} />
+              ))}
+            </div>
+          </div>
+          <div>
+            <p className="text-sm text-center">{user?.emailAddresses[0].emailAddress}</p>
+          </div>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }
@@ -102,7 +130,7 @@ function MobileSidebarTab({ icon: Icon, label, href }: MobileSidebarTabProps) {
 
   return (
     <Link href={href} className={`${isActive && activeLinkStyle}`}>
-      <Button variant="ghost" size="lg">
+      <Button variant="ghost" size="lg" className="w-full">
         <Icon />
       </Button>
     </Link>
@@ -111,7 +139,7 @@ function MobileSidebarTab({ icon: Icon, label, href }: MobileSidebarTabProps) {
 
 function DesktopSidebar() {
   return (
-    <div className="border-r border-input h-full py-10">
+    <div className="w-fit border-r border-input h-full py-10 overflow-y-auto overflow-x-hidden">
       {/* <MenuIcon /> */}
       <div className="flex flex-col">
         {SidebarTabs.main.map((tab) => (
