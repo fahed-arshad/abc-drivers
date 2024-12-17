@@ -48,7 +48,8 @@ export function Autocomplete<T extends string>({
 
   const onInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     if (!e.relatedTarget?.hasAttribute('cmdk-list') && labels[selectedValue] !== searchValue) {
-      reset();
+      // By default, reset the value if the selected value is not the same as the search value
+      // reset();
     }
   };
 
