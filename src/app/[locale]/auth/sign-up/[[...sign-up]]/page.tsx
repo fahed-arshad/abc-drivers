@@ -21,6 +21,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import Navigator from '../../components/navigator';
 import SignUpDisclaimer from '../../components/disclaimer';
+import { useSearchParams } from 'next/navigation';
 
 const formSchema = z.object({
   email: z.string().email().min(1, 'Required'),
@@ -32,6 +33,7 @@ type FormProps = z.infer<typeof formSchema>;
 
 function SignUpPage() {
   const router = useRouter();
+  const params = useSearchParams();
   const t = useTranslations('signUpPage');
   const { isLoaded, signUp } = useSignUp();
   const [loading, setLoading] = useState(false);
@@ -39,7 +41,7 @@ function SignUpPage() {
   const form = useForm<FormProps>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: '',
+      email: params?.get('email') || '',
       phone: '',
       password: ''
     }
