@@ -17,7 +17,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 import { useUser } from '@/hooks/useUser';
 import useApi from '@/hooks/api/useApi';
@@ -25,6 +24,8 @@ import useApi from '@/hooks/api/useApi';
 import { cn } from '@/lib/utils';
 
 import { CircleDollarSignIcon } from 'lucide-react';
+import { PayoutsTable } from './components/payouts-table';
+import { columns } from './components/columns';
 
 const formSchema = z.object({
   accountNo: z.string().min(1, 'Required'),
@@ -243,11 +244,74 @@ const SupportedMethods = [
 type PayoutDetailsProps = React.HTMLAttributes<HTMLDivElement>;
 
 function PayoutDetails({ className }: PayoutDetailsProps) {
+  const { user } = useUser();
+  const { payouts } = useApi();
+  const queryClient = useQueryClient();
+
+  const { data: dueAmountData, isFetching } = useQuery({
+    queryKey: ['payouts', 'due-amount', user?.id],
+    queryFn: () => payouts.getDueAmount()
+  });
+
+  const { data: allPayoutsData } = useQuery({
+    queryKey: ['payouts', user?.id],
+    queryFn: () => payouts.getAllPayouts()
+  });
+
+  const { mutateAsync: requestPayoutMutation, isPending } = useMutation({
+    mutationFn: payouts.requestPayout,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['payouts', user?.id] });
+      queryClient.invalidateQueries({ queryKey: ['payouts', 'due-amount', user?.id] });
+      toast.success('Payout request sent successfully.');
+    },
+    onError: () => {
+      toast.error('Failed to send the payout request. Please try again later.');
+    }
+  });
+
+  const handleRequestPayout = () => {
+    requestPayoutMutation();
+  };
+
+  const mock = [
+    {
+      id: 1,
+      amount: 100,
+      status: 'PENDING',
+      createdAt: '2021-09-01'
+    },
+    {
+      id: 2,
+      amount: 200,
+      status: 'COMPLETED',
+      proof: 'https://www.google.com',
+      createdAt: '2021-09-02'
+    }
+  ];
+
   return (
     <div className={cn(className)}>
-      <h2 className="font-semibold">Payouts Details</h2>
+      <div>
+        <h2 className="font-semibold">Available Funds</h2>
+        <div className="border py-6 px-4 space-y-2 mt-4 w-full md:w-[400px]">
+          <p className="text-sm text-gray-600 font-semibold">Balance available for use</p>
+          <h1 className="text-2xl font-semibold">OMR {dueAmountData?.dueAmount}</h1>
+          <Button disabled={dueAmountData?.dueAmount === 0 || isFetching} onClick={handleRequestPayout} loading={isPending}>
+            REQUEST WITHDRAWAL
+          </Button>
+        </div>
+      </div>
+
+      <h2 className="font-semibold mt-4">Payout Details</h2>
+      <PayoutsTable columns={columns} data={allPayoutsData} searchKey="id" />
+    </div>
+  );
+}
+
+{
+  /* <h2 className="font-semibold mt-8">Payouts Details</h2>
       <Table className="mt-4">
-        {/* <TableCaption>Payout Details</TableCaption> */}
         <TableHeader>
           <TableRow>
             <TableHead className="w-[100px]">Job ID</TableHead>
@@ -272,7 +336,5 @@ function PayoutDetails({ className }: PayoutDetailsProps) {
             <TableCell className="text-right"></TableCell>
           </TableRow>
         </TableBody>
-      </Table>
-    </div>
-  );
+      </Table> */
 }
