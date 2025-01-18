@@ -175,7 +175,37 @@
         "BANK_TRANSFER": "التحويل البنكي",
         "MOBILE_PAYMENT": "الدفع عبر الهاتف"
       },
-      "cta": "حفظ"
+      "cta": "حفظ",
+      "funds": {
+        "title": "الأموال المتاحة",
+        "card": {
+          "title": "الرصيد المتاح للاستخدام",
+          "cta": "طلب السحب"
+        }
+      },
+      "payouts": {
+        "title": "تفاصيل السحب",
+        "datatable": {
+          "columns": [
+            {
+              "title": "رقم الطلب"
+            },
+            {
+              "title": "المبلغ"
+            },
+            {
+              "title": "الحالة"
+            },
+            {
+              "title": "الإيصال"
+            },
+            {
+              "title": "تم الإنشاء في"
+            }
+          ],
+          "noResults": "لا يوجد نتائج."
+        }
+      }
     },
     "businessInformationPage": {
       "title": "معلومات العمل",

@@ -175,7 +175,37 @@
         "BANK_TRANSFER": "Bank Transfer",
         "MOBILE_PAYMENT": "Mobile Payment"
       },
-      "cta": "SAVE"
+      "cta": "SAVE",
+      "funds": {
+        "title": "Available Funds",
+        "card": {
+          "title": "Balance available for use",
+          "cta": "REQUEST WITHDRAWAL"
+        }
+      },
+      "payouts": {
+        "title": "Payout Details",
+        "datatable": {
+          "columns": [
+            {
+              "title": "Request ID"
+            },
+            {
+              "title": "Amount"
+            },
+            {
+              "title": "Status"
+            },
+            {
+              "title": "Receipt"
+            },
+            {
+              "title": "Created At"
+            }
+          ],
+          "noResults": "No results."
+        }
+      }
     },
     "businessInformationPage": {
       "title": "BUSINESS INFORMATION",

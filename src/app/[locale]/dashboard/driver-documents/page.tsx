@@ -24,10 +24,22 @@ import useApi from '@/hooks/api/useApi';
 import { FilesIcon } from 'lucide-react';
 
 const formSchema = z.object({
-  vehicleInsuranceUrl: z.string().url().optional(),
-  vehicleOwnershipUrl: z.string().url().optional(),
-  driverLicenseUrl: z.string().url().optional(),
-  identificationCardUrl: z.string().url().optional()
+  vehicleInsurance: z.object({
+    id: z.number().min(1, 'Required'),
+    url: z.string().url().min(1, 'Required')
+  }),
+  vehicleOwnership: z.object({
+    id: z.number().min(1, 'Required'),
+    url: z.string().url().min(1, 'Required')
+  }),
+  driverLicense: z.object({
+    id: z.number().min(1, 'Required'),
+    url: z.string().url().min(1, 'Required')
+  }),
+  identificationCard: z.object({
+    id: z.number().min(1, 'Required'),
+    url: z.string().url().min(1, 'Required')
+  })
 });
 
 type FormProps = z.infer<typeof formSchema>;
@@ -58,20 +70,41 @@ function DriverDocumentsPage() {
   const getInitialValues = () => {
     const documents = driver?.documents as any[];
     return {
-      vehicleInsuranceUrl: documents?.find((doc) => doc?.type === 'INSURANCE')?.url || '',
-      vehicleOwnershipUrl: documents?.find((doc) => doc?.type === 'OWNERSHIP')?.url || '',
-      driverLicenseUrl: documents?.find((doc) => doc?.type === 'LICENSE')?.url || '',
-      identificationCardUrl: documents?.find((doc) => doc?.type === 'ID')?.url || ''
+      vehicleInsurance: {
+        id: documents?.find((doc) => doc?.type === 'INSURANCE')?.id || 0,
+        url: documents?.find((doc) => doc?.type === 'INSURANCE')?.url || ''
+      },
+      vehicleOwnership: {
+        id: documents?.find((doc) => doc?.type === 'OWNERSHIP')?.id || 0,
+        url: documents?.find((doc) => doc?.type === 'OWNERSHIP')?.url || ''
+      },
+      driverLicense: {
+        id: documents?.find((doc) => doc?.type === 'LICENSE')?.id || 0,
+        url: documents?.find((doc) => doc?.type === 'LICENSE')?.url || ''
+      },
+      identificationCard: {
+        id: documents?.find((doc) => doc?.type === 'ID')?.id || 0,
+        url: documents?.find((doc) => doc?.type === 'ID')?.url || ''
+      }
     };
   };
 
   const form = useForm<FormProps>({
     // resolver: zodResolver(formSchema),
     defaultValues: {
-      vehicleInsuranceUrl: '',
-      vehicleOwnershipUrl: '',
-      driverLicenseUrl: '',
-      identificationCardUrl: ''
+      vehicleInsurance: {
+        id: 0,
+        url: ''
+      },
+      vehicleOwnership: {
+        id: 0,
+        url: ''
+      },
+      driverLicense: {
+        id: 0,
+        url: ''
+      },
+      identificationCard: { id: 0, url: '' }
     },
     values: getInitialValues()
   });
@@ -82,17 +115,17 @@ function DriverDocumentsPage() {
 
   const handleSubmit = async (data: FormProps) => {
     const documents = [];
-    if (data.vehicleInsuranceUrl) {
-      documents.push({ type: 'INSURANCE', url: data.vehicleInsuranceUrl });
+    if (data.vehicleInsurance.url) {
+      documents.push({ type: 'INSURANCE', fileId: data.vehicleInsurance.id });
     }
-    if (data.vehicleOwnershipUrl) {
-      documents.push({ type: 'OWNERSHIP', url: data.vehicleOwnershipUrl });
+    if (data.vehicleOwnership.url) {
+      documents.push({ type: 'OWNERSHIP', fileId: data.vehicleOwnership.id });
     }
-    if (data.driverLicenseUrl) {
-      documents.push({ type: 'LICENSE', url: data.driverLicenseUrl });
+    if (data.driverLicense.url) {
+      documents.push({ type: 'LICENSE', fileId: data.driverLicense.id });
     }
-    if (data.identificationCardUrl) {
-      documents.push({ type: 'ID', url: data.identificationCardUrl });
+    if (data.identificationCard.url) {
+      documents.push({ type: 'ID', fileId: data.identificationCard.id });
     }
     await editDocumentsMutation(documents);
   };
@@ -108,8 +141,8 @@ function DriverDocumentsPage() {
         <div className="mt-8">
           <Form {...form}>
             <form className="space-y-2 w-full mx-auto md:w-[750px] grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-24" onSubmit={form.handleSubmit(handleSubmit)}>
-              {form.watch('vehicleInsuranceUrl') ? (
-                <FileUploadedBlock title={t('insuranceUploadField.title')} description={t('insuranceUploadField.description')} url={form.watch('vehicleInsuranceUrl')!} />
+              {form.watch('vehicleInsurance.url') ? (
+                <FileUploadedBlock title={t('insuranceUploadField.title')} description={t('insuranceUploadField.description')} url={form.watch('vehicleInsurance.url')!} />
               ) : (
                 <FileUploadBlock
                   title={t('insuranceUploadField.title')}
@@ -118,11 +151,11 @@ function DriverDocumentsPage() {
                 />
               )}
 
-              {form.watch('vehicleOwnershipUrl') ? (
+              {form.watch('vehicleOwnership.url') ? (
                 <FileUploadedBlock
                   title={t('vehicleOwnershipUploadField.title')}
                   description={t('vehicleOwnershipUploadField.description')}
-                  url={form.watch('vehicleOwnershipUrl')!}
+                  url={form.watch('vehicleOwnership.url')!}
                 />
               ) : (
                 <FileUploadBlock
@@ -132,8 +165,8 @@ function DriverDocumentsPage() {
                 />
               )}
 
-              {form.watch('driverLicenseUrl') ? (
-                <FileUploadedBlock title={t('licenseUploadField.title')} description={t('licenseUploadField.description')} url={form.watch('driverLicenseUrl')!} />
+              {form.watch('driverLicense.url') ? (
+                <FileUploadedBlock title={t('licenseUploadField.title')} description={t('licenseUploadField.description')} url={form.watch('driverLicense.url')!} />
               ) : (
                 <FileUploadBlock
                   title={t('licenseUploadField.title')}
@@ -142,8 +175,8 @@ function DriverDocumentsPage() {
                 />
               )}
 
-              {form.watch('identificationCardUrl') ? (
-                <FileUploadedBlock title={t('idUploadField.title')} description={t('idUploadField.description')} url={form.watch('identificationCardUrl')!} />
+              {form.watch('identificationCard.url') ? (
+                <FileUploadedBlock title={t('idUploadField.title')} description={t('idUploadField.description')} url={form.watch('identificationCard.url')!} />
               ) : (
                 <FileUploadBlock
                   title={t('idUploadField.title')}

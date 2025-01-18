@@ -32,7 +32,10 @@ const formSchema = z.object({
   city: z.string().min(1, 'Required'),
   governate: z.string().min(1, 'Required'),
   crNo: z.string().min(1, 'Required'),
-  crUrl: z.string().url().min(1, 'Required')
+  crFile: z.object({
+    id: z.number().min(1, 'Required'),
+    url: z.string().url().min(1, 'Required')
+  })
 });
 
 type FormProps = z.infer<typeof formSchema>;
@@ -80,7 +83,10 @@ function BusinessInformationPage() {
       city: '',
       governate: Governates[0],
       crNo: '',
-      crUrl: ''
+      crFile: {
+        id: 0,
+        url: ''
+      }
     },
     values: {
       name: driver?.business?.name ?? '',
@@ -89,12 +95,18 @@ function BusinessInformationPage() {
       city: driver?.business?.address?.city ?? '',
       governate: driver?.business?.address?.governate ?? Governates[0],
       crNo: driver?.business?.crNo ?? '',
-      crUrl: driver?.business?.crUrl ?? ''
+      crFile: {
+        id: driver?.business?.crFile?.id ?? 0,
+        url: driver?.business?.crFile?.url ?? ''
+      }
     }
   });
 
   const handleFileUploaded = (data: any) => {
-    form.setValue('crUrl', data.url);
+    form.setValue('crFile', {
+      id: data?.id,
+      url: data?.url
+    });
   };
 
   const handleSubmit = async (data: FormProps) => {
@@ -108,7 +120,7 @@ function BusinessInformationPage() {
           governate: data.governate
         },
         crNo: data.crNo,
-        crUrl: data.crUrl
+        crFileId: data.crFile.id
       });
     } else {
       await createDriverBusinessMutation({
@@ -120,7 +132,7 @@ function BusinessInformationPage() {
           governate: data.governate
         },
         crNo: data.crNo,
-        crUrl: data.crUrl
+        crFileId: data.crFile.id
       });
     }
   };
@@ -225,8 +237,8 @@ function BusinessInformationPage() {
               )}
             />
 
-            {form.watch('crUrl') ? (
-              <FileUploadedBlock title={t('crUploadField.title')} description={t('crUploadField.description')} url={form.watch('crUrl')!} />
+            {form.watch('crFile.id') ? (
+              <FileUploadedBlock title={t('crUploadField.title')} description={t('crUploadField.description')} url={form.watch('crFile.url')!} />
             ) : (
               <FileUploadBlock title={t('crUploadField.title')} description={t('crUploadField.description')} onUploadFinished={handleFileUploaded} />
             )}

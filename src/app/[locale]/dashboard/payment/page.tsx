@@ -17,6 +17,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { PayoutsTable } from './components/payouts-table';
+import { columns } from './components/columns';
+import { Skeleton } from '@/components/ui/skeleton';
 
 import { useUser } from '@/hooks/useUser';
 import useApi from '@/hooks/api/useApi';
@@ -24,8 +27,6 @@ import useApi from '@/hooks/api/useApi';
 import { cn } from '@/lib/utils';
 
 import { CircleDollarSignIcon } from 'lucide-react';
-import { PayoutsTable } from './components/payouts-table';
-import { columns } from './components/columns';
 
 const formSchema = z.object({
   accountNo: z.string().min(1, 'Required'),
@@ -247,6 +248,7 @@ function PayoutDetails({ className }: PayoutDetailsProps) {
   const { user } = useUser();
   const { payouts } = useApi();
   const queryClient = useQueryClient();
+  const t = useTranslations('dashboard.paymentPage');
 
   const { data: dueAmountData, isFetching } = useQuery({
     queryKey: ['payouts', 'due-amount', user?.id],
@@ -274,67 +276,21 @@ function PayoutDetails({ className }: PayoutDetailsProps) {
     requestPayoutMutation();
   };
 
-  const mock = [
-    {
-      id: 1,
-      amount: 100,
-      status: 'PENDING',
-      createdAt: '2021-09-01'
-    },
-    {
-      id: 2,
-      amount: 200,
-      status: 'COMPLETED',
-      proof: 'https://www.google.com',
-      createdAt: '2021-09-02'
-    }
-  ];
-
   return (
     <div className={cn(className)}>
       <div>
-        <h2 className="font-semibold">Available Funds</h2>
+        <h2 className="font-semibold">{t('funds.title')}</h2>
         <div className="border py-6 px-4 space-y-2 mt-4 w-full md:w-[400px]">
-          <p className="text-sm text-gray-600 font-semibold">Balance available for use</p>
-          <h1 className="text-2xl font-semibold">OMR {dueAmountData?.dueAmount}</h1>
+          <p className="text-sm text-gray-600 font-semibold">{t('funds.card.title')}</p>
+          {isFetching ? <Skeleton className="h-[20px] w-[150px]" /> : <h1 className="text-2xl font-semibold">OMR {dueAmountData?.dueAmount}</h1>}
           <Button disabled={dueAmountData?.dueAmount === 0 || isFetching} onClick={handleRequestPayout} loading={isPending}>
-            REQUEST WITHDRAWAL
+            {t('funds.card.cta')}
           </Button>
         </div>
       </div>
 
-      <h2 className="font-semibold mt-4">Payout Details</h2>
-      <PayoutsTable columns={columns} data={allPayoutsData} searchKey="id" />
+      <h2 className="font-semibold mt-4">{t('payouts.title')}</h2>
+      <PayoutsTable columns={columns} data={allPayoutsData ?? []} searchKey="id" />
     </div>
   );
-}
-
-{
-  /* <h2 className="font-semibold mt-8">Payouts Details</h2>
-      <Table className="mt-4">
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[100px]">Job ID</TableHead>
-            <TableHead>Job Date</TableHead>
-            <TableHead>Job Status</TableHead>
-            <TableHead>Amount</TableHead>
-            <TableHead>Customer Payment Status</TableHead>
-            <TableHead>Amount Due To Driver</TableHead>
-            <TableHead>Payout Status</TableHead>
-            <TableHead>Details</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <TableRow>
-            <TableCell className="font-medium"></TableCell>
-            <TableCell></TableCell>
-            <TableCell></TableCell>
-            <TableCell className="text-right"></TableCell>
-            <TableCell className="text-xs text-gray-600">No data available</TableCell>
-            <TableCell></TableCell>
-            <TableCell></TableCell>
-            <TableCell className="text-right"></TableCell>
-          </TableRow>
-        </TableBody>
-      </Table> */
 }
