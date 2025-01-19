@@ -9,9 +9,11 @@ import { ColumnDef } from '@tanstack/react-table';
 
 export type PayoutRow = {
   id: string;
-  amount: number;
+  totalAmount: number;
+  platformFee: number;
   proof?: string;
   status: string;
+  releasedAt?: string;
   updatedAt: string;
   createdAt: string;
 };
@@ -28,7 +30,8 @@ export const columns: ColumnDef<PayoutRow>[] = [
     accessorKey: 'amount',
     header: ({ column }) => <p>Amount</p>,
     cell: ({ row }) => {
-      return <p>OMR {row.original.amount}</p>;
+      const driverReceivedAmount = (row.original.totalAmount - row.original.platformFee).toFixed(2);
+      return <p>OMR {driverReceivedAmount}</p>;
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
@@ -67,6 +70,17 @@ export const columns: ColumnDef<PayoutRow>[] = [
           Download Receipt
         </Button>
       );
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    }
+  },
+  {
+    accessorKey: 'releasedAt',
+    header: ({ column }) => <p>Released At</p>,
+    cell: ({ row }) => {
+      if (!row.original.releasedAt) return <p>-</p>;
+      return <p>{dayjs(row.original.releasedAt).format('DD/MM/YYYY')}</p>;
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
