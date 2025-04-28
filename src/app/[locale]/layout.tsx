@@ -32,15 +32,15 @@ export default async function RootLayout({
   const messages = await getMessages();
 
   return (
-    <ClerkProvider dynamic={true}>
-      <html lang={locale}>
-        <body className={`${poppins.className} antialiased`}>
+    <html lang={locale}>
+      <body className={`${poppins.className} antialiased`}>
+        <ClerkProvider dynamic={true}>
           <ReactQueryProvider>
             <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
           </ReactQueryProvider>
           <Toaster />
-        </body>
-      </html>
-    </ClerkProvider>
+        </ClerkProvider>
+      </body>
+    </html>
   );
 }
