@@ -33,7 +33,7 @@ const formSchema = z.object({
   governate: z.string().min(1, 'Required'),
   crNo: z.string().min(1, 'Required'),
   crFile: z.object({
-    id: z.number().min(1, 'Required'),
+    id: z.string().min(1, 'Required'),
     url: z.string().url().min(1, 'Required')
   })
 });
@@ -84,7 +84,7 @@ function BusinessInformationPage() {
       governate: Governates[0],
       crNo: '',
       crFile: {
-        id: 0,
+        id: '',
         url: ''
       }
     },
@@ -103,11 +103,15 @@ function BusinessInformationPage() {
   });
 
   const handleFileUploaded = (data: any) => {
+    console.log('file uploaded data', data);
     form.setValue('crFile', {
       id: data?.id,
       url: data?.url
     });
   };
+
+  console.log('form', form.getValues());
+  console.log('form errors', form.formState.errors);
 
   const handleSubmit = async (data: FormProps) => {
     if (driver?.business) {

@@ -1,6 +1,7 @@
 import Header from './components/header';
 import Sidebar from './components/sidebar';
 import Footer from './components/footer';
+import { ProfileCompletionWrapper } from './components/ProfileCompletionWrapper';
 
 async function DashboardLayout({
   children,
@@ -18,6 +19,7 @@ async function DashboardLayout({
         <main className="flex-1 overflow-y-auto">{children}</main>
       </div>
       <Footer className="absolute bottom-0 left-0 right-0" />
+      <ProfileCompletionWrapper />
     </div>
   );
 }
