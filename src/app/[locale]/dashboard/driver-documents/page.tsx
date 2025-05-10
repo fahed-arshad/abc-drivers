@@ -1,7 +1,7 @@
 'use client';
 
 import z from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
+// import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useForm } from 'react-hook-form';
 
@@ -25,19 +25,19 @@ import { FilesIcon } from 'lucide-react';
 
 const formSchema = z.object({
   vehicleInsurance: z.object({
-    id: z.number().min(1, 'Required'),
+    fileId: z.string().min(1, 'Required'),
     url: z.string().url().min(1, 'Required')
   }),
   vehicleOwnership: z.object({
-    id: z.number().min(1, 'Required'),
+    fileId: z.string().min(1, 'Required'),
     url: z.string().url().min(1, 'Required')
   }),
   driverLicense: z.object({
-    id: z.number().min(1, 'Required'),
+    fileId: z.string().min(1, 'Required'),
     url: z.string().url().min(1, 'Required')
   }),
   identificationCard: z.object({
-    id: z.number().min(1, 'Required'),
+    fileId: z.string().min(1, 'Required'),
     url: z.string().url().min(1, 'Required')
   })
 });
@@ -56,35 +56,43 @@ function DriverDocumentsPage() {
     queryFn: () => drivers.getDriver()
   });
 
-  const { mutateAsync: editDocumentsMutation, isPending: isEditing } = useMutation({
-    mutationFn: drivers.editDriverDocuments,
+  const { mutateAsync: createDocumentsMutation, isPending: isCreatingDocument } = useMutation({
+    mutationFn: drivers.createDriverDocuments,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['drivers', user?.id] });
-      toast.success('Documents updated successfully.');
-    },
-    onError: () => {
-      toast.error('Failed to update documents.');
+      toast.success('Documents created successfully.');
     }
   });
+
+  // const { mutateAsync: editDocumentsMutation, isPending: isEditing } = useMutation({
+  //   mutationFn: drivers.editDriverDocuments,
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ['drivers', user?.id] });
+  //     toast.success('Documents updated successfully.');
+  //   },
+  //   onError: () => {
+  //     toast.error('Failed to update documents.');
+  //   }
+  // });
 
   const getInitialValues = () => {
     const documents = driver?.documents as any[];
     return {
       vehicleInsurance: {
-        id: documents?.find((doc) => doc?.type === 'INSURANCE')?.id || 0,
-        url: documents?.find((doc) => doc?.type === 'INSURANCE')?.url || ''
+        fileId: documents?.find((doc) => doc?.type === 'INSURANCE')?.file?.id || '',
+        url: documents?.find((doc) => doc?.type === 'INSURANCE')?.file?.url || ''
       },
       vehicleOwnership: {
-        id: documents?.find((doc) => doc?.type === 'OWNERSHIP')?.id || 0,
-        url: documents?.find((doc) => doc?.type === 'OWNERSHIP')?.url || ''
+        fileId: documents?.find((doc) => doc?.type === 'OWNERSHIP')?.file?.id || '',
+        url: documents?.find((doc) => doc?.type === 'OWNERSHIP')?.file?.url || ''
       },
       driverLicense: {
-        id: documents?.find((doc) => doc?.type === 'LICENSE')?.id || 0,
-        url: documents?.find((doc) => doc?.type === 'LICENSE')?.url || ''
+        fileId: documents?.find((doc) => doc?.type === 'LICENSE')?.file?.id || '',
+        url: documents?.find((doc) => doc?.type === 'LICENSE')?.file?.url || ''
       },
       identificationCard: {
-        id: documents?.find((doc) => doc?.type === 'ID')?.id || 0,
-        url: documents?.find((doc) => doc?.type === 'ID')?.url || ''
+        fileId: documents?.find((doc) => doc?.type === 'ID')?.file?.id || '',
+        url: documents?.find((doc) => doc?.type === 'ID')?.file?.url || ''
       }
     };
   };
@@ -93,41 +101,47 @@ function DriverDocumentsPage() {
     // resolver: zodResolver(formSchema),
     defaultValues: {
       vehicleInsurance: {
-        id: 0,
+        fileId: '',
         url: ''
       },
       vehicleOwnership: {
-        id: 0,
+        fileId: '',
         url: ''
       },
       driverLicense: {
-        id: 0,
+        fileId: '',
         url: ''
       },
-      identificationCard: { id: 0, url: '' }
+      identificationCard: { fileId: '', url: '' }
     },
     values: getInitialValues()
   });
 
-  const handleFileUploaded = (fileName: string, data: any) => {
-    form.setValue(fileName as any, data?.url);
+  const handleFileUploaded = (fileName: string, data: { id: string; url: string }) => {
+    form.setValue(fileName as any, { fileId: data.id, url: data.url });
   };
 
-  const handleSubmit = async (data: FormProps) => {
+  console.log('form', form.watch());
+
+  const handleSubmit = (data: FormProps) => {
     const documents = [];
     if (data.vehicleInsurance.url) {
-      documents.push({ type: 'INSURANCE', fileId: data.vehicleInsurance.id });
+      documents.push({ type: 'INSURANCE', fileId: data.vehicleInsurance.fileId });
     }
     if (data.vehicleOwnership.url) {
-      documents.push({ type: 'OWNERSHIP', fileId: data.vehicleOwnership.id });
+      documents.push({ type: 'OWNERSHIP', fileId: data.vehicleOwnership.fileId });
     }
     if (data.driverLicense.url) {
-      documents.push({ type: 'LICENSE', fileId: data.driverLicense.id });
+      documents.push({ type: 'LICENSE', fileId: data.driverLicense.fileId });
     }
     if (data.identificationCard.url) {
-      documents.push({ type: 'ID', fileId: data.identificationCard.id });
+      documents.push({ type: 'ID', fileId: data.identificationCard.fileId });
     }
-    await editDocumentsMutation(documents);
+
+    if (documents.length === 0) return toast.error('Please upload at least one document.');
+
+    // await editDocumentsMutation(documents);
+    createDocumentsMutation(documents);
   };
 
   return (
@@ -147,7 +161,7 @@ function DriverDocumentsPage() {
                 <FileUploadBlock
                   title={t('insuranceUploadField.title')}
                   description={t('insuranceUploadField.description')}
-                  onUploadFinished={(data) => handleFileUploaded('vehicleInsuranceUrl', data)}
+                  onUploadFinished={(data) => handleFileUploaded('vehicleInsurance', data)}
                 />
               )}
 
@@ -161,7 +175,7 @@ function DriverDocumentsPage() {
                 <FileUploadBlock
                   title={t('vehicleOwnershipUploadField.title')}
                   description={t('vehicleOwnershipUploadField.description')}
-                  onUploadFinished={(data) => handleFileUploaded('vehicleOwnershipUrl', data)}
+                  onUploadFinished={(data) => handleFileUploaded('vehicleOwnership', data)}
                 />
               )}
 
@@ -171,7 +185,7 @@ function DriverDocumentsPage() {
                 <FileUploadBlock
                   title={t('licenseUploadField.title')}
                   description={t('licenseUploadField.description')}
-                  onUploadFinished={(data) => handleFileUploaded('driverLicenseUrl', data)}
+                  onUploadFinished={(data) => handleFileUploaded('driverLicense', data)}
                 />
               )}
 
@@ -181,12 +195,12 @@ function DriverDocumentsPage() {
                 <FileUploadBlock
                   title={t('idUploadField.title')}
                   description={t('idUploadField.description')}
-                  onUploadFinished={(data) => handleFileUploaded('identificationCardUrl', data)}
+                  onUploadFinished={(data) => handleFileUploaded('identificationCard', data)}
                 />
               )}
 
               <div className="flex justify-center">
-                <Button type="submit" size="lg" loading={isEditing} className="text-lg font-semibold">
+                <Button type="submit" size="lg" loading={isCreatingDocument} className="text-lg font-semibold">
                   {t('cta')}
                 </Button>
               </div>
