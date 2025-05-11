@@ -76,6 +76,7 @@ function SignInPage() {
         const message = error?.message;
         console.log(error);
         if (code === 'form_password_incorrect') return toast.error(message ?? 'Incorrect password');
+        if (code === 'form_identifier_not_found') return toast.error(message ?? 'Account not found. Please sign up.');
         return toast.error('An error occurred. Please try again later');
       } else return toast.error('An error occurred. Please try again later');
     } finally {
