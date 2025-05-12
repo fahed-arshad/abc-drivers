@@ -61,7 +61,7 @@
       "title": "Password",
       "placeholder": "Enter your password"
     },
-    "agreement": "By clicking ‘JOIN US’, I agree that ABC Emergency or it’s representatives may contact me by email, phone, or SMS (including by automatic telephone dialing system) at the email address and number provided. I also agree to ABC Emergency's",
+    "agreement": "By clicking 'JOIN US', I agree that ABC Emergency or it's representatives may contact me by email, phone, or SMS (including by automatic telephone dialing system) at the email address and number provided. I also agree to ABC Emergency's",
     "terms": "Terms and Conditions",
     "and": "and",
     "privacy": "Privacy Policy",
@@ -265,6 +265,20 @@
         "description": "For verification upload your Resident identification card"
       },
       "cta": "SAVE"
+    }
+  },
+  "Common": {
+    "dataTable": {
+      "noResults": "No results.",
+      "showing": "Showing",
+      "of": "of",
+      "results": "results",
+      "rowsPerPage": "Rows per page",
+      "page": "Page",
+      "goToFirstPage": "Go to first page",
+      "goToPreviousPage": "Go to previous page",
+      "goToNextPage": "Go to next page",
+      "goToLastPage": "Go to last page"
     }
   }
 }
