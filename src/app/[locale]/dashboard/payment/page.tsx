@@ -290,7 +290,7 @@ function PayoutDetails({ className }: PayoutDetailsProps) {
       </div>
 
       <h2 className="font-semibold mt-4">{t('payouts.title')}</h2>
-      <PayoutsTable columns={columns} data={allPayoutsData ?? []} searchKey="id" />
+      <PayoutsTable data={allPayoutsData ?? []} loading={isFetching} className="mt-4" />
     </div>
   );
 }
