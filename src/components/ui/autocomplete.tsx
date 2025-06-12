@@ -48,14 +48,19 @@ export function Autocomplete<T extends string>({
 
   const onInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     if (!e.relatedTarget?.hasAttribute('cmdk-list') && labels[selectedValue] !== searchValue) {
-      reset();
+      // By default, reset the value if the selected value is not the same as the search value
+      // reset();
     }
   };
 
   const onSelectItem = (inputValue: string) => {
-    if (inputValue === selectedValue) {
-      reset();
-    } else {
+    // if (inputValue === selectedValue) {
+    //   reset();
+    // } else {
+    //   onSelectedValueChange(inputValue as T);
+    //   onSearchValueChange(labels[inputValue] ?? '');
+    // }
+    if (inputValue !== selectedValue) {
       onSelectedValueChange(inputValue as T);
       onSearchValueChange(labels[inputValue] ?? '');
     }

@@ -1,1 +1,1 @@
-export const JWT_TEMPLATE = 'Test';
+export const JWT_TEMPLATE = 'Client';
