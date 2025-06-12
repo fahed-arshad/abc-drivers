@@ -73,8 +73,8 @@ function OperatingHoursPage() {
     return {
       day: day as any,
       isAvailable: false,
-      open: '00:00',
-      close: '00:00'
+      open: '09:00',
+      close: '16:00'
     };
   };
 
