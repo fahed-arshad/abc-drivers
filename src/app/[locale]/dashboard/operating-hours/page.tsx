@@ -19,6 +19,7 @@ import useApi from '@/hooks/api/useApi';
 import { useUser } from '@/hooks/useUser';
 
 import { ClockIcon } from 'lucide-react';
+import dayjs from 'dayjs';
 
 function OperatingHoursPage() {
   const { user } = useUser();
@@ -78,8 +79,20 @@ function OperatingHoursPage() {
     };
   };
 
+  const isCloseTimeBeforeOpenTime = (availability: Availability): boolean => {
+    const baseDate = dayjs();
+    const closeTime = dayjs(`${baseDate.format('YYYY-MM-DD')} ${availability.close}`);
+    const openTime = dayjs(`${baseDate.format('YYYY-MM-DD')} ${availability.open}`);
+    return closeTime.isBefore(openTime);
+  };
+
   const handleAvailabilityChange = (availability: Availability) => {
     if (availability.isAvailable) {
+      if (isCloseTimeBeforeOpenTime(availability)) {
+        toast.error('Close time cannot be before open time.');
+        return;
+      }
+
       const found = availabilities.find((a) => a.day === availability.day);
       if (found) {
         // Remove the availability from the list
@@ -105,6 +118,14 @@ function OperatingHoursPage() {
     }
 
     if (availabilities.length === 0) return;
+
+    // Check if any close time is before open time
+    const invalidAvailabilities = availabilities.filter((availability) => isCloseTimeBeforeOpenTime(availability));
+
+    if (invalidAvailabilities.length > 0) {
+      toast.error('Close time cannot be before open time.');
+      return;
+    }
 
     await editDriverAvailabilityMutation(
       availabilities.map((availability) => ({
