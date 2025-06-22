@@ -180,7 +180,10 @@
         "title": "Available Funds",
         "card": {
           "title": "Balance available for use",
-          "cta": "REQUEST WITHDRAWAL"
+          "cta": "REQUEST WITHDRAWAL",
+          "info": {
+            "pending": "Drivers can only have one payment request at a time. You already have a payment request under review. Once completed, you may submit a new payment request."
+          }
         }
       },
       "payouts": {
