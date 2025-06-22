@@ -19,6 +19,7 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { PayoutsTable } from './components/payouts-table';
 import { columns } from './components/columns';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Skeleton } from '@/components/ui/skeleton';
 
 import { useUser } from '@/hooks/useUser';
@@ -26,7 +27,7 @@ import useApi from '@/hooks/api/useApi';
 
 import { cn } from '@/lib/utils';
 
-import { CircleDollarSignIcon } from 'lucide-react';
+import { CircleDollarSignIcon, InfoIcon } from 'lucide-react';
 
 const formSchema = z.object({
   accountNo: z.string().min(1, 'Required'),
@@ -267,14 +268,19 @@ function PayoutDetails({ className }: PayoutDetailsProps) {
       queryClient.invalidateQueries({ queryKey: ['payouts', 'due-amount', user?.id] });
       toast.success('Payout request sent successfully.');
     },
-    onError: () => {
-      toast.error('Failed to send the payout request. Please try again later.');
+    onError: (err: any) => {
+      if (err?.response?.status === 400) toast.error('You cannot request more payouts as you already have pending payouts.');
+      else toast.error('Failed to send the payout request. Please try again later.');
     }
   });
 
   const handleRequestPayout = () => {
     requestPayoutMutation();
   };
+
+  const hasPendingPayouts = allPayoutsData?.some((payout: any) => payout.status === 'PENDING');
+  const isPayoutsAllowed = dueAmountData?.dueAmount > 0 && !isFetching && !hasPendingPayouts;
+  const info = hasPendingPayouts ? t('funds.card.info.pending') : null;
 
   return (
     <div className={cn(className)}>
@@ -283,9 +289,26 @@ function PayoutDetails({ className }: PayoutDetailsProps) {
         <div className="border py-6 px-4 space-y-2 mt-4 w-full md:w-[400px]">
           <p className="text-sm text-gray-600 font-semibold">{t('funds.card.title')}</p>
           {isFetching ? <Skeleton className="h-[20px] w-[150px]" /> : <h1 className="text-2xl font-semibold">OMR {dueAmountData?.dueAmount}</h1>}
-          <Button disabled={dueAmountData?.dueAmount === 0 || isFetching} onClick={handleRequestPayout} loading={isPending}>
-            {t('funds.card.cta')}
-          </Button>
+          <div className="flex items-center gap-2">
+            <div className="flex flex-col gap-2">
+              <Button disabled={!isPayoutsAllowed || isFetching} onClick={handleRequestPayout} loading={isPending}>
+                {t('funds.card.cta')}
+              </Button>
+              <p className="text-xs text-accent-foreground md:hidden">{info}</p>
+            </div>
+            {info && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild className="hidden md:block">
+                    <InfoIcon className="w-4 h-4 text-gray-500" />
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-lg">
+                    <p className="text-xs">{info}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
+          </div>
         </div>
       </div>
 
